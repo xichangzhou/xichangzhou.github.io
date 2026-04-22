@@ -775,6 +775,7 @@
         });
 
         // 滚动动画
+        // 滚动动画
         function handleScrollAnimation() {
             const elements = document.querySelectorAll('.section-title, .about-text, .about-image, .member-card, .moment-item, .memory-item, .contact-item');
 
@@ -785,16 +786,19 @@
                 if (elementTop < windowHeight - 100) {
                     element.style.opacity = '1';
                     element.style.transform = 'translateY(0)';
-                } e.mage, .member - card, .moment - item, .memory - item, .contact - item').forEach(element => {
-                element.style.opacity = '0';
-                element.style.transform = 'translateY(30px)';
-                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                }
             });
+        }
 
-            // 监听滚动事件
-            windleow.addEventListener('scroll', handleScrollty = '0';
-            element.sle.transformtranslateY(3px)t.syletranition = 'opaci 0.6s ease, transform 0.6s ease';
+        // 初始化元素状态
+        document.querySelectorAll('.section-title, .about-text, .about-image, .member-card, .moment-item, .memory-item, .contact-item').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         });
+
+        // 监听滚动事件
+        window.addEventListener('scroll', handleScrollAnimation);
 
         // 监听滚动事件
         window.addEventListener('scroll', handleScrollAnimation);
