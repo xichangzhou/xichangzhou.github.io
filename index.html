@@ -413,6 +413,94 @@
             color: #4a6fa5;
         }
 
+        /* PDF文件 */
+        .pdf-files {
+            background-color: white;
+        }
+
+        .pdf-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .pdf-item {
+            background-color: #f5f5f5;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .pdf-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .pdf-icon {
+            font-size: 48px;
+            color: #e74c3c;
+            flex-shrink: 0;
+        }
+
+        .pdf-info {
+            flex: 1;
+        }
+
+        .pdf-info h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #4a6fa5;
+        }
+
+        .pdf-info p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .pdf-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pdf-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .view-button {
+            background-color: #4a6fa5;
+            color: white;
+        }
+
+        .view-button:hover {
+            background-color: #3a5a85;
+            transform: translateY(-2px);
+        }
+
+        .download-button {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .download-button:hover {
+            background-color: #e67e22;
+            transform: translateY(-2px);
+        }
+
         /* 联系我们 */
         .contact {
             background: linear-gradient(135deg, #4a6fa5, #6495ed);
@@ -551,6 +639,7 @@
                     <li><a href="#family">家庭成员</a></li>
                     <li><a href="#life">生活点滴</a></li>
                     <li><a href="#memories">美好回忆</a></li>
+                    <li><a href="#pdf">PDF文件</a></li>
                     <li><a href="#contact">联系我们</a></li>
                 </ul>
             </nav>
@@ -699,6 +788,65 @@
         </div>
     </section>
 
+    <section id="pdf" class="pdf-files">
+        <div class="container">
+            <h2 class="section-title">PDF文件</h2>
+            <div class="pdf-container">
+                <div class="pdf-item">
+                    <div class="pdf-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="pdf-info">
+                        <h3>L1 300字.pdf</h3>
+                        <p>文件大小: 未知</p>
+                        <div class="pdf-actions">
+                            <a href="assets/pdf/L1 300字.pdf" target="_blank" class="pdf-button view-button">
+                                <i class="fas fa-eye"></i> 查看
+                            </a>
+                            <a href="assets/pdf/L1 300字.pdf" download class="pdf-button download-button">
+                                <i class="fas fa-download"></i> 下载
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="pdf-item">
+                    <div class="pdf-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="pdf-info">
+                        <h3>L2 400字.pdf</h3>
+                        <p>文件大小: 未知</p>
+                        <div class="pdf-actions">
+                            <a href="assets/pdf/L2 400字.pdf" target="_blank" class="pdf-button view-button">
+                                <i class="fas fa-eye"></i> 查看
+                            </a>
+                            <a href="assets/pdf/L2 400字.pdf" download class="pdf-button download-button">
+                                <i class="fas fa-download"></i> 下载
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="pdf-item">
+                    <div class="pdf-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="pdf-info">
+                        <h3>L3 600字.pdf</h3>
+                        <p>文件大小: 未知</p>
+                        <div class="pdf-actions">
+                            <a href="assets/pdf/L3 600字.pdf" target="_blank" class="pdf-button view-button">
+                                <i class="fas fa-eye"></i> 查看
+                            </a>
+                            <a href="assets/pdf/L3 600字.pdf" download class="pdf-button download-button">
+                                <i class="fas fa-download"></i> 下载
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="contact">
         <div class="container">
             <h2 class="section-title">联系我们</h2>
@@ -816,7 +964,7 @@
         // 滚动动画
         // 滚动动画
         function handleScrollAnimation() {
-            const elements = document.querySelectorAll('.section-title, .about-text, .about-image, .member-card, .moment-item, .memory-item, .contact-item');
+            const elements = document.querySelectorAll('.section-title, .about-text, .about-image, .member-card, .moment-item, .memory-item, .contact-item, .pdf-item');
 
             elements.forEach(element => {
                 const elementTop = element.getBoundingClientRect().top;
@@ -830,7 +978,7 @@
         }
 
         // 初始化元素状态
-        document.querySelectorAll('.section-title, .about-text, .about-image, .member-card, .moment-item, .memory-item, .contact-item').forEach(element => {
+        document.querySelectorAll('.section-title, .about-text, .about-image, .member-card, .moment-item, .memory-item, .contact-item, .pdf-item').forEach(element => {
             element.style.opacity = '0';
             element.style.transform = 'translateY(30px)';
             element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
