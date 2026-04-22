@@ -2,143 +2,804 @@
 <html lang="zh-CN">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>jsonxcz 一家 | 家庭主页</title>
-  <meta name="generator" content="VuePress 1.8.2">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jsonxcz 一家 | 家庭主页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <meta name="description" content="jsonxcz 一家的家庭主页，记录生活点滴和美好回忆">
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
 
-  <link rel="preload" href="/assets/css/0.styles.e4d8b86b.css" as="style">
-  <link rel="preload" href="/assets/js/app.5f0ae191.js" as="script">
-  <link rel="preload" href="/assets/js/2.52f8a9f4.js" as="script">
-  <link rel="preload" href="/assets/js/7.b1be5094.js" as="script">
-  <link rel="prefetch" href="/assets/js/3.187d161f.js">
-  <link rel="prefetch" href="/assets/js/4.34e98049.js">
-  <link rel="prefetch" href="/assets/js/5.9f94e9b7.js">
-  <link rel="prefetch" href="/assets/js/6.a84b4694.js">
-  <link rel="prefetch" href="/assets/js/8.c71bc16e.js">
-  <link rel="prefetch" href="/assets/js/9.9fd92d84.js">
-  <link rel="stylesheet" href="/assets/css/0.styles.e4d8b86b.css">
+        /* 导航栏 */
+        header {
+            background-color: rgba(74, 111, 165, 0.95);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ffd700;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* 炫酷首页 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(74, 111, 165, 0.9), rgba(100, 149, 237, 0.8)), url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=happy%20family%20portrait%20in%20park%2C%20sunny%20day%2C%20warm%20atmosphere%2C%20realistic%20style&image_size=landscape_16_9');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #ffd700;
+            color: #333;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .cta-button:hover {
+            background-color: #ffed4e;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 粒子效果 */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 215, 0, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: translateY(-50px) rotate(180deg);
+                opacity: 0.3;
+            }
+        }
+
+        /* 通用部分样式 */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            color: #4a6fa5;
+            font-size: 40px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: #ffd700;
+            border-radius: 2px;
+        }
+
+        /* 关于我们 */
+        .about {
+            background-color: white;
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .about-image img:hover {
+            transform: scale(1.02);
+        }
+
+        /* 家庭成员 */
+        .family-members {
+            background-color: #f9f9f9;
+        }
+
+        .members-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+        }
+
+        .member-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            width: 300px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #4a6fa5, #ffd700);
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-card img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 25px;
+            border: 4px solid #f5f5f5;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .member-card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #4a6fa5;
+        }
+
+        .member-card p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* 生活点滴 */
+        .life-moments {
+            background-color: white;
+        }
+
+        .moments-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .moment-item {
+            background-color: #f5f5f5;
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border-left: 4px solid #4a6fa5;
+        }
+
+        .moment-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .moment-item h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #4a6fa5;
+        }
+
+        /* 美好回忆 */
+        .memories {
+            background-color: #f9f9f9;
+        }
+
+        .memories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .memory-item {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .memory-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .memory-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .memory-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .memory-item .memory-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .memory-item h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #4a6fa5;
+        }
+
+        /* 联系我们 */
+        .contact {
+            background: linear-gradient(135deg, #4a6fa5, #6495ed);
+            color: white;
+            text-align: center;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .contact-item {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            min-width: 200px;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .contact-item i {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                align-items: flex-start;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(74, 111, 165, 0.95);
+                padding: 20px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                cursor: pointer;
+                font-size: 24px;
+            }
+
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .hero p {
+                font-size: 20px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
-  <div id="app" data-server-rendered="true">
-    <div class="theme-container">
-      <header class="navbar">
-        <div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img"
-            viewBox="0 0 448 512" class="icon">
-            <path fill="currentColor"
-              d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z">
-            </path>
-          </svg></div> <a href="/" aria-current="page"
-          class="home-link router-link-exact-active router-link-active"><!----> <span class="site-name">jsonxcz
-            一家</span></a>
-        <div class="links">
-          <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!---->
-          </div>
-          <nav class="nav-links can-hide">
-            <div class="nav-item"><a href="/#home" class="nav-link">
-                首页
-              </a></div>
-            <div class="nav-item"><a href="/#family" class="nav-link">
-                家庭成员
-              </a></div>
-            <div class="nav-item"><a href="/#life" class="nav-link">
-                生活点滴
-              </a></div>
-            <div class="nav-item"><a href="/#memories" class="nav-link">
-                美好回忆
-              </a></div> <!---->
-          </nav>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">jsonxcz 一家</div>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="#family">家庭成员</a></li>
+                    <li><a href="#life">生活点滴</a></li>
+                    <li><a href="#memories">美好回忆</a></li>
+                    <li><a href="#contact">联系我们</a></li>
+                </ul>
+            </nav>
         </div>
-      </header>
-      <div class="sidebar-mask"></div>
-      <aside class="sidebar">
-        <nav class="nav-links">
-          <div class="nav-item"><a href="/#home" class="nav-link">
-              首页
-            </a></div>
-          <div class="nav-item"><a href="/#family" class="nav-link">
-              家庭成员
-            </a></div>
-          <div class="nav-item"><a href="/#life" class="nav-link">
-              生活点滴
-            </a></div>
-          <div class="nav-item"><a href="/#memories" class="nav-link">
-              美好回忆
-            </a></div> <!---->
-        </nav>
-        <ul class="sidebar-links">
-          <li>
-            <section class="sidebar-group depth-0">
-              <p class="sidebar-heading open"><span>jsonxcz 一家</span> <!----></p>
-              <ul class="sidebar-links sidebar-group-items">
-                <li><a href="/#home" class="sidebar-link">首页</a></li>
-                <li><a href="/#family" class="sidebar-link">家庭成员</a></li>
-                <li><a href="/#life" class="sidebar-link">生活点滴</a></li>
-                <li><a href="/#memories" class="sidebar-link">美好回忆</a></li>
-              </ul>
-            </section>
-          </li>
-        </ul>
-      </aside>
-      <main class="page">
-        <div class="theme-default-content content__default">
-          <h1 id="欢迎使用-cmd-markdown-编辑阅读器"><a href="#欢迎使用-cmd-markdown-编辑阅读器" class="header-anchor">#</a> 欢迎使用 Cmd
-            Markdown 编辑阅读器</h1>
-          <hr>
-          <p>我们理解您需要更便捷更高效的工具记录思想，整理笔记、知识，并将其中承载的价值传播给他人，<strong>Cmd Markdown</strong> 是我们给出的答案 —— 我们为记录思想和分享知识提供更专业的工具。
-            您可以使用 Cmd Markdown：</p>
-          <blockquote>
-            <ul>
-              <li>整理知识，学习笔记</li>
-              <li>发布日记，杂文，所见所想</li>
-              <li>撰写发布技术文稿（代码支持）</li>
-              <li>撰写发布学术论文（LaTeX 公式支持）</li>
-            </ul>
-          </blockquote>
-          <p><img src="https://www.zybuluo.com/static/img/logo.png" alt="cmd-markdown-logo"></p>
-          <p>除了您现在看到的这个 Cmd Markdown 在线版本，您还可以前往以下网址下载：</p>
-          <h3 id="windows-mac-linux-全平台客户端"><a href="#windows-mac-linux-全平台客户端" class="header-anchor">#</a> <a
-              href="https://www.zybuluo.com/cmd/" target="_blank" rel="noopener noreferrer">Windows/Mac/Linux
-              全平台客户端<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px"
-                  viewBox="0 0 100 100" width="15" height="15" class="icon outbound">
-                  <path fill="currentColor"
-                    d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z">
-                  </path>
-                  <polygon fill="currentColor"
-                    points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9">
-                  </polygon>
-                </svg> <span class="sr-only">(opens new window)</span></span></a></h3>
-          <blockquote>
-            <p>请保留此份 Cmd Markdown 的欢迎稿兼使用说明，如需撰写新稿件，点击顶部工具栏右侧的 <i class="icon-file"></i> <strong>新文稿</strong> 或者使用快捷键
-              <code>Ctrl+Alt+N</code>。
-            </p>
-          </blockquote>
-          <hr>
-          <h2 id="什么是-markdown"><a href="#什么是-markdown" class="header-anchor">#</a> 什么是 Markdown</h2>
-          <p>Markdown
-            是一种方便记忆、书写的纯文本标记语言，用户可以使用这些标记符号以最小的输入代价生成极富表现力的文档：譬如您正在阅读的这份文档。它使用简单的符号标记不同的标题，分割不同的段落，<strong>粗体</strong>
-            或者 <em>斜体</em> 某些文字，更棒的是，它还可以</p>
-          <h3 id="_1-制作一份待办事宜-todo-列表"><a href="#_1-制作一份待办事宜-todo-列表" class="header-anchor">#</a> 1. 制作一份待办事宜 <a
-              href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#13-%E5%BE%85%E5%8A%9E%E4%BA%8B%E5%AE%9C-todo-%E5%88%97%E8%A1%A8"
-              target="_blank" rel="noopener noreferrer">Todo 列表<span><svg xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15"
-                  class="icon outbound">
-                  <path fill="currentColor"
-                    d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z">
-                  </path>
-                  <polygon fill="currentColor"
-                    points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9">
-                  </polygon>
-                </svg> <span class="sr-only">(opens new window)</span></span></a></h3>
-          <ul>
-            <li>[ ] 支持以 PDF 格式导出文稿</li>
-            <li>[ ] 改进 Cmd 渲染算法，使用局部渲染技术提高渲染效率</li>
-            <li>[x] 新增 Todo 列表功能</li>
-            <li>[x] 修复 LaTex 公式渲染问题</li>
-            <li>[x] 新增 LaTex 公式编号功能</li>
-          </ul>
-          <h3 id="_2-书写一个质能守恒公式-latex"><a href="#_2-书写一个质能守恒公式-latex" class="header-anchor">#</a> 2. 书写一个质能守恒公式[^latex]
-          </h3>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="particles" id="particles"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>jsonxcz 一家</h1>
+                <p>欢迎来到我们的家庭主页，记录生活点滴和美好回忆</p>
+                <a href="#about" class="cta-button">了解更多</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">关于我们</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>我们是一个充满爱和欢乐的家庭，由 jsonxcz 和他的家人组成。我们热爱生活，喜欢旅行、阅读和探索新事物。</p>
+                    <p>这个主页是我们记录家庭生活的地方，希望通过分享我们的故事，传递快乐和温暖。我们相信家庭是生活中最重要的财富，每一个瞬间都值得珍惜。</p>
+                    <p>无论是周末的家庭聚餐，还是假期的旅行，我们都享受在一起的时光，创造属于我们的美好回忆。</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=happy%20family%20together%20at%20home%2C%20cozy%20atmosphere%2C%20realistic%20style&image_size=landscape_16_9"
+                        alt="家庭合影">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="family" class="family-members">
+        <div class="container">
+            <h2 class="section-title">家庭成员</h2>
+            <div class="members-container">
+                <div class="member-card">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=portrait%20of%20a%20happy%20young%20man%2C%20smiling%2C%20casual%20clothing%2C%20realistic%20style&image_size=square"
+                        alt="jsonxcz">
+                    <h3>jsonxcz</h3>
+                    <p>家庭的核心成员，热爱技术和编程，喜欢探索新事物。</p>
+                </div>
+                <div class="member-card">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=portrait%20of%20a%20happy%20woman%2C%20smiling%2C%20casual%20clothing%2C%20realistic%20style&image_size=square"
+                        alt="家人">
+                    <h3>家人</h3>
+                    <p>温柔善良，擅长家务和烹饪，是家庭的温暖源泉。</p>
+                </div>
+                <div class="member-card">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=portrait%20of%20a%20happy%20child%2C%20smiling%2C%20casual%20clothing%2C%20realistic%20style&image_size=square"
+                        alt="孩子">
+                    <h3>孩子</h3>
+                    <p>活泼可爱，充满好奇心，是家庭的快乐天使。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="life" class="life-moments">
+        <div class="container">
+            <h2 class="section-title">生活点滴</h2>
+            <div class="moments-container">
+                <div class="moment-item">
+                    <h3><i class="fas fa-utensils"></i> 周末聚餐</h3>
+                    <p>每个周末，我们都会一起做饭，尝试新的菜谱，享受美食和家庭时光。</p>
+                </div>
+                <div class="moment-item">
+                    <h3><i class="fas fa-plane"></i> 家庭旅行</h3>
+                    <p>节假日，我们喜欢全家出游，探索新的地方，创造共同的回忆。</p>
+                </div>
+                <div class="moment-item">
+                    <h3><i class="fas fa-film"></i> 电影之夜</h3>
+                    <p>晚上，我们经常一起看电影，分享彼此的感受，增进家庭成员之间的感情。</p>
+                </div>
+                <div class="moment-item">
+                    <h3><i class="fas fa-gamepad"></i> 游戏时光</h3>
+                    <p>我们定期举办家庭游戏夜，通过游戏增进感情，享受欢乐时光。</p>
+                </div>
+                <div class="moment-item">
+                    <h3><i class="fas fa-book"></i> 阅读分享</h3>
+                    <p>我们喜欢一起阅读，分享书中的精彩内容，丰富彼此的知识和视野。</p>
+                </div>
+                <div class="moment-item">
+                    <h3><i class="fas fa-music"></i> 音乐时光</h3>
+                    <p>我们喜欢一起听音乐，唱歌跳舞，享受音乐带来的快乐。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="memories" class="memories">
+        <div class="container">
+            <h2 class="section-title">美好回忆</h2>
+            <div class="memories-grid">
+                <div class="memory-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20vacation%20at%20beach%2C%20playing%20in%20sand%2C%20sunny%20day%2C%20realistic%20style&image_size=square"
+                        alt="海滩度假">
+                    <div class="memory-content">
+                        <h3>海滩度假</h3>
+                        <p>在海滩上享受阳光和海浪，一起建造沙堡，度过愉快的假期。</p>
+                    </div>
+                </div>
+                <div class="memory-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20hiking%20in%20mountains%2C%20beautiful%20scenery%2C%20realistic%20style&image_size=square"
+                        alt="登山活动">
+                    <div class="memory-content">
+                        <h3>登山活动</h3>
+                        <p>一起攀登山峰，欣赏美丽的风景，挑战自我，增强家庭凝聚力。</p>
+                    </div>
+                </div>
+                <div class="memory-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20celebration%20at%20home%2C%20birthday%20party%2C%20happy%20atmosphere%2C%20realistic%20style&image_size=square"
+                        alt="生日庆祝">
+                    <div class="memory-content">
+                        <h3>生日庆祝</h3>
+                        <p>为家人庆祝生日，准备惊喜和礼物，共享欢乐时光。</p>
+                    </div>
+                </div>
+                <div class="memory-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20cooking%20together%20in%20kitchen%2C%20happy%20atmosphere%2C%20realistic%20style&image_size=square"
+                        alt="一起做饭">
+                    <div class="memory-content">
+                        <h3>一起做饭</h3>
+                        <p>在厨房里一起准备美食，分工合作，享受烹饪的乐趣。</p>
+                    </div>
+                </div>
+                <div class="memory-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20watching%20movie%20together%20at%20home%2C%20cozy%20atmosphere%2C%20realistic%20style&image_size=square"
+                        alt="看电影">
+                    <div class="memory-content">
+                        <h3>看电影</h3>
+                        <p>在家里一起看电影，分享爆米花，度过温馨的夜晚。</p>
+                    </div>
+                </div>
+                <div class="memory-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20playing%20games%20together%20at%20home%2C%20happy%20atmosphere%2C%20realistic%20style&image_size=square"
+                        alt="玩游戏">
+                    <div class="memory-content">
+                        <h3>玩游戏</h3>
+                        <p>一起玩桌游或电子游戏，享受竞争和合作的乐趣。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">联系我们</h2>
+            <div class="contact-content">
+                <p>如果您想了解更多关于我们家庭的信息，或者有任何问题，欢迎随时联系我们。</p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <h3>邮箱</h3>
+                        <p>jsonxcz@example.com</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-weixin"></i>
+                        <h3>微信</h3>
+                        <p>jsonxcz_family</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>地址</h3>
+                        <p>中国</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 jsonxcz 一家 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.backgroundColor = 'rgba(74, 111, 165, 0.98)';
+                header.style.padding = '15px 0';
+            } else {
+                header.style.backgroundColor = 'rgba(74, 111, 165, 0.95)';
+                header.style.padding = '20px 0';
+            }
+        });
+
+        // 移动端菜单
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', function () {
+            navLinks.classList.toggle('active');
+        });
+
+        // 图片加载动画
+        document.querySelectorAll('img').forEach(img => {
+            img.style.opacity = '0';
+            img.style.transition = 'opacity 0.5s ease-in-out';
+
+            img.onload = function () {
+                img.style.opacity = '1';
+            };
+        });
+
+        // 粒子效果
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                // 随机大小
+                const size = Math.random() * 10 + 5;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+
+                // 随机位置
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+
+                // 随机动画延迟
+                particle.style.animationDelay = Math.random() * 6 + 's';
+
+                // 随机动画持续时间
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 页面加载完成后创建粒子
+        window.addEventListener('load', function () {
+            createParticles();
+        });
+
+        // 滚动动画
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.section-title, .about-text, .about-image, .member-card, .moment-item, .memory-item, .contact-item');
+
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+
+                if (elementTop < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                } e.mage, .member - card, .moment - item, .memory - item, .contact - item').forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+
+            // 监听滚动事件
+            windleow.addEventListener('scroll', handleScrollty = '0';
+            element.sle.transformtranslateY(3px)t.syletranition = 'opaci 0.6s ease, transform 0.6s ease';
+        });
+
+        // 监听滚动事件
+        window.addEventListener('scroll', handleScrollAnimation);
+
+        // 初始调用
+        handScrollAnimation();
+    </script>
+</body>
+
+</html>
