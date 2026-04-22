@@ -72,7 +72,8 @@
             transition: width 0.3s ease;
         }
 
-        .nav-links a:hover {
+        .nav-links a:hover,
+        .nav-links a.active {
             color: #ffd700;
         }
 
@@ -797,14 +798,36 @@
             element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         });
 
-        // 监听滚动事件
-        window.addEventListener('scroll', handleScrollAnimation);
+        // 导航高亮
+        function highlightNavigation() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+
+            let currentSection = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 100) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
 
         // 监听滚动事件
         window.addEventListener('scroll', handleScrollAnimation);
+        window.addEventListener('scroll', highlightNavigation);
 
         // 初始调用
-        handScrollAnimation();
+        handleScrollAnimation();
+        highlightNavigation();
     </script>
 </body>
 
