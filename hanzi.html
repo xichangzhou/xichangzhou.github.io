@@ -1158,6 +1158,34 @@
             }
         }
 
+        // 汉字笔顺数据
+        const hanziStrokeData = {
+            '一': ['横'],
+            '二': ['横', '横'],
+            '三': ['横', '横', '横'],
+            '人': ['撇', '捺'],
+            '大': ['横', '撇', '捺'],
+            '小': ['竖钩', '撇', '点'],
+            '中': ['竖', '横折', '横', '竖'],
+            '国': ['竖', '横折', '横', '横', '竖', '横', '点', '横'],
+            '天': ['横', '横', '撇', '捺'],
+            '日': ['竖', '横折', '横', '横'],
+            '月': ['撇', '横折钩', '横', '横'],
+            '水': ['竖钩', '横撇', '撇', '捺'],
+            '火': ['点', '撇', '撇', '捺'],
+            '山': ['竖', '竖折', '竖'],
+            '口': ['竖', '横折', '横'],
+            '手': ['撇', '横', '横', '竖钩'],
+            '足': ['竖', '横折', '横', '竖', '横', '撇', '捺'],
+            '目': ['竖', '横折', '横', '横', '横'],
+            '耳': ['横', '竖', '竖', '横', '横', '横'],
+            '心': ['点', '卧钩', '点', '点'],
+            '子': ['横撇', '弯钩', '横'],
+            '女': ['撇点', '撇', '横'],
+            '父': ['撇', '点', '撇', '捺'],
+            '母': ['竖折', '横折钩', '点', '横', '点']
+        };
+
         // 点击汉字显示详情
         document.querySelectorAll('.hanzi-item').forEach(item => {
             item.addEventListener('click', function () {
@@ -1176,9 +1204,10 @@
                 // 生成笔顺
                 const strokeOrder = document.getElementById('strokeOrder');
                 let strokeHTML = '';
-                for (let i = 1; i <= currentStrokes; i++) {
-                    const strokeNames = ['横', '竖', '撇', '点', '折', '捺', '提'];
-                    const strokeName = strokeNames[(i - 1) % strokeNames.length];
+                const strokes = hanziStrokeData[currentHanzi] || [];
+
+                for (let i = 1; i <= strokes.length; i++) {
+                    const strokeName = strokes[i - 1];
                     strokeHTML += `
                         <div class="stroke-item" onclick="startStrokeTrace(${i})">
                             <span>第${i}笔</span>
