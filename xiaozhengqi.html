@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -373,6 +374,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -380,13 +382,16 @@
         }
 
         /* 滚动动画 */
-        .learning-card, .chinese-content, .feature-item {
+        .learning-card,
+        .chinese-content,
+        .feature-item {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.6s ease, transform 0.6s ease;
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="container">
@@ -423,7 +428,7 @@
     <section id="learning" class="learning-section">
         <div class="container">
             <h2 class="section-title">学习内容</h2>
-            
+
             <div class="learning-categories">
                 <!-- 汉字学习 -->
                 <div class="learning-card">
@@ -464,10 +469,11 @@
                     <h3>有趣的汉字学习</h3>
                     <p>通过动画和游戏的方式学习汉字，让孩子在轻松愉快的氛围中掌握汉字的书写和含义。我们提供了常用汉字的学习内容，包括笔顺演示、发音练习和词语搭配。</p>
                     <p>每个汉字都配有生动的插图和例句，帮助孩子理解汉字的含义和用法。通过互动练习，孩子可以巩固所学知识，提高汉字识别和书写能力。</p>
-                    <a href="#" class="learning-button">开始学习</a>
+                    <a href="hanzi.html" class="learning-button">开始学习</a>
                 </div>
                 <div class="chinese-image">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20chinese%20characters%2C%20colorful%20educational%20interface%2C%20cartoon%20style&image_size=landscape_16_9" alt="汉字学习">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20chinese%20characters%2C%20colorful%20educational%20interface%2C%20cartoon%20style&image_size=landscape_16_9"
+                        alt="汉字学习">
                 </div>
             </div>
         </div>
@@ -478,7 +484,8 @@
             <h2 class="section-title">拼音学习</h2>
             <div class="chinese-content">
                 <div class="chinese-image">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20chinese%20pinyin%2C%20colorful%20phonetics%20interface%2C%20cartoon%20style&image_size=landscape_16_9" alt="拼音学习">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20chinese%20pinyin%2C%20colorful%20phonetics%20interface%2C%20cartoon%20style&image_size=landscape_16_9"
+                        alt="拼音学习">
                 </div>
                 <div class="chinese-text">
                     <h3>标准的拼音发音</h3>
@@ -501,7 +508,8 @@
                     <a href="#" class="learning-button">开始学习</a>
                 </div>
                 <div class="chinese-image">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20english%2C%20colorful%20educational%20interface%2C%20cartoon%20style&image_size=landscape_16_9" alt="英语学习">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20english%2C%20colorful%20educational%20interface%2C%20cartoon%20style&image_size=landscape_16_9"
+                        alt="英语学习">
                 </div>
             </div>
         </div>
@@ -512,7 +520,8 @@
             <h2 class="section-title">数学学习</h2>
             <div class="chinese-content">
                 <div class="chinese-image">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20math%2C%20colorful%20numbers%20and%20shapes%2C%20cartoon%20style&image_size=landscape_16_9" alt="数学学习">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20math%2C%20colorful%20numbers%20and%20shapes%2C%20cartoon%20style&image_size=landscape_16_9"
+                        alt="数学学习">
                 </div>
                 <div class="chinese-text">
                     <h3>趣味数学学习</h3>
@@ -616,4 +625,5 @@
         handleScrollAnimation();
     </script>
 </body>
+
 </html>

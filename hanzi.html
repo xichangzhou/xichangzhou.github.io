@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汉字学习 | 小正启</title>
+    <meta name="description" content="小正启 - 汉字学习页面，通过有趣的互动方式学习汉字">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 导航栏 */
+        header {
+            background-color: rgba(74, 111, 165, 0.95);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            padding: 0 0 0 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            padding: 0 20px 0 0;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ffd700;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ffd700;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* 菜单按钮 */
+        .menu-toggle {
+            display: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.9), rgba(255, 215, 0, 0.8)), url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=colorful%20chinese%20characters%2C%20calligraphy%2C%20traditional%20chinese%20art%2C%20bright%20colors%2C%20cartoon%20style&image_size=landscape_16_9');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+            text-align: center;
+            padding: 150px 0;
+            position: relative;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        /* 汉字列表部分 */
+        .hanzi-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #4a6fa5;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #ffd700;
+            margin: 20px auto;
+        }
+
+        .hanzi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .hanzi-item {
+            background-color: #f5f5f5;
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4a6fa5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .hanzi-item:hover {
+            transform: scale(1.1);
+            border-color: #ffd700;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+
+        .hanzi-item.selected {
+            border-color: #4a6fa5;
+            background-color: #e8f4fd;
+        }
+
+        /* 汉字详情部分 */
+        .hanzi-detail {
+            background-color: #f9f9f9;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 40px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .hanzi-detail.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .hanzi-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .hanzi-big {
+            font-size: 8rem;
+            font-weight: bold;
+            color: #4a6fa5;
+            line-height: 1;
+        }
+
+        .hanzi-info {
+            flex: 1;
+        }
+
+        .hanzi-info h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .hanzi-info p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .hanzi-strokes {
+            margin-top: 20px;
+        }
+
+        .hanzi-strokes h3 {
+            font-size: 1.5rem;
+            color: #4a6fa5;
+            margin-bottom: 15px;
+        }
+
+        .stroke-order {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .stroke-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .stroke-item span {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4a6fa5;
+        }
+
+        .stroke-item small {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .hanzi-words {
+            margin-top: 30px;
+        }
+
+        .hanzi-words h3 {
+            font-size: 1.5rem;
+            color: #4a6fa5;
+            margin-bottom: 15px;
+        }
+
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .word-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .word-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .word-item .word {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .word-item .pinyin {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .word-item .meaning {
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 3px;
+        }
+
+        .close-detail {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-detail:hover {
+            background-color: #3a5a85;
+            transform: scale(1.1);
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: rgba(74, 111, 165, 0.98);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                z-index: 999;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                cursor: pointer;
+                font-size: 28px;
+                padding: 10px 20px;
+                background: none;
+                border: none;
+                color: white;
+                z-index: 1001;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hanzi-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 15px;
+            }
+
+            .hanzi-item {
+                font-size: 2.5rem;
+                padding: 25px 15px;
+            }
+
+            .hanzi-detail-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hanzi-big {
+                font-size: 6rem;
+            }
+
+            .hanzi-info h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">jsonxcz 一家</a>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">首页</a></li>
+                    <li><a href="index.html#about">关于我们</a></li>
+                    <li><a href="index.html#family">家庭成员</a></li>
+                    <li><a href="index.html#life">生活点滴</a></li>
+                    <li><a href="index.html#memories">美好回忆</a></li>
+                    <li><a href="index.html#pdf">PDF文件</a></li>
+                    <li><a href="developer.html">程序员</a></li>
+                    <li><a href="xiaozhengqi.html" class="active">小正启</a></li>
+                    <li><a href="index.html#contact">联系我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>汉字学习</h1>
+                <p>点击汉字开始学习，了解汉字的笔画、发音和组词</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="hanzi-section">
+        <div class="container">
+            <h2 class="section-title">常用汉字</h2>
+            
+            <div class="hanzi-grid">
+                <div class="hanzi-item" data-hanzi="一" data-pinyin="yī" data-strokes="1" data-words='[{"word":"一天","pinyin":"yī tiān","meaning":"one day"},{"word":"一个","pinyin":"yī gè","meaning":"one"},{"word":"第一","pinyin":"dì yī","meaning":"first"}]'>一</div>
+                <div class="hanzi-item" data-hanzi="二" data-pinyin="èr" data-strokes="2" data-words='[{"word":"二月","pinyin":"èr yuè","meaning":"February"},{"word":"第二","pinyin":"dì èr","meaning":"second"},{"word":"二十","pinyin":"èr shí","meaning":"twenty"}]'>二</div>
+                <div class="hanzi-item" data-hanzi="三" data-pinyin="sān" data-strokes="3" data-words='[{"word":"三月","pinyin":"sān yuè","meaning":"March"},{"word":"三个","pinyin":"sān gè","meaning":"three"},{"word":"第三","pinyin":"dì sān","meaning":"third"}]'>三</div>
+                <div class="hanzi-item" data-hanzi="人" data-pinyin="rén" data-strokes="2" data-words='[{"word":"人们","pinyin":"rén men","meaning":"people"},{"word":"大人","pinyin":"dà rén","meaning":"adult"},{"word":"人生","pinyin":"rén shēng","meaning":"life"}]'>人</div>
+                <div class="hanzi-item" data-hanzi="大" data-pinyin="dà" data-strokes="3" data-words='[{"word":"大人","pinyin":"dà rén","meaning":"adult"},{"word":"大家","pinyin":"dà jiā","meaning":"everyone"},{"word":"大小","pinyin":"dà xiǎo","meaning":"size"}]'>大</div>
+                <div class="hanzi-item" data-hanzi="小" data-pinyin="xiǎo" data-strokes="3" data-words='[{"word":"小孩","pinyin":"xiǎo hái","meaning":"child"},{"word":"大小","pinyin":"dà xiǎo","meaning":"size"},{"word":"小朋友","pinyin":"xiǎo péng yǒu","meaning":"little friend"}]'>小</div>
+                <div class="hanzi-item" data-hanzi="中" data-pinyin="zhōng" data-strokes="4" data-words='[{"word":"中国","pinyin":"zhōng guó","meaning":"China"},{"word":"中间","pinyin":"zhōng jiān","meaning":"middle"},{"word":"中午","pinyin":"zhōng wǔ","meaning":"noon"}]'>中</div>
+                <div class="hanzi-item" data-hanzi="国" data-pinyin="guó" data-strokes="8" data-words='[{"word":"中国","pinyin":"zhōng guó","meaning":"China"},{"word":"国家","pinyin":"guó jiā","meaning":"country"},{"word":"外国","pinyin":"wài guó","meaning":"foreign country"}]'>国</div>
+                <div class="hanzi-item" data-hanzi="天" data-pinyin="tiān" data-strokes="4" data-words='[{"word":"今天","pinyin":"jīn tiān","meaning":"today"},{"word":"明天","pinyin":"míng tiān","meaning":"tomorrow"},{"word":"一天","pinyin":"yī tiān","meaning":"one day"}]'>天</div>
+                <div class="hanzi-item" data-hanzi="日" data-pinyin="rì" data-strokes="4" data-words='[{"word":"生日","pinyin":"shēng rì","meaning":"birthday"},{"word":"日记","pinyin":"rì jì","meaning":"diary"},{"word":"日子","pinyin":"rì zi","meaning":"day"}]'>日</div>
+                <div class="hanzi-item" data-hanzi="月" data-pinyin="yuè" data-strokes="4" data-words='[{"word":"月亮","pinyin":"yuè liang","meaning":"moon"},{"word":"月份","pinyin":"yuè fèn","meaning":"month"},{"word":"一月","pinyin":"yī yuè","meaning":"January"}]'>月</div>
+                <div class="hanzi-item" data-hanzi="水" data-pinyin="shuǐ" data-strokes="4" data-words='[{"word":"水果","pinyin":"shuǐ guǒ","meaning":"fruit"},{"word":"喝水","pinyin":"hē shuǐ","meaning":"drink water"},{"word":"开水","pinyin":"kāi shuǐ","meaning":"boiled water"}]'>水</div>
+                <div class="hanzi-item" data-hanzi="火" data-pinyin="huǒ" data-strokes="4" data-words='[{"word":"火车","pinyin":"huǒ chē","meaning":"train"},{"word":"火山","pinyin":"huǒ shān","meaning":"volcano"},{"word":"大火","pinyin":"dà huǒ","meaning":"big fire"}]'>火</div>
+                <div class="hanzi-item" data-hanzi="山" data-pinyin="shān" data-strokes="3" data-words='[{"word":"山上","pinyin":"shān shàng","meaning":"on the mountain"},{"word":"高山","pinyin":"gāo shān","meaning":"high mountain"},{"word":"登山","pinyin":"dēng shān","meaning":"mountaineering"}]'>山</div>
+                <div class="hanzi-item" data-hanzi="口" data-pinyin="kǒu" data-strokes="3" data-words='[{"word":"口水","pinyin":"kǒu shuǐ","meaning":"saliva"},{"word":"门口","pinyin":"mén kǒu","meaning":"door"},{"word":"入口","pinyin":"rù kǒu","meaning":"entrance"}]'>口</div>
+                <div class="hanzi-item" data-hanzi="手" data-pinyin="shǒu" data-strokes="4" data-words='[{"word":"手机","pinyin":"shǒu jī","meaning":"mobile phone"},{"word":"左手","pinyin":"zuǒ shǒu","meaning":"left hand"},{"word":"右手","pinyin":"yòu shǒu","meaning":"right hand"}]'>手</div>
+                <div class="hanzi-item" data-hanzi="足" data-pinyin="zú" data-strokes="7" data-words='[{"word":"足球","pinyin":"zú qiú","meaning":"football"},{"word":"手足","pinyin":"shǒu zú","meaning":"brothers"},{"word":"满足","pinyin":"mǎn zú","meaning":"satisfied"}]'>足</div>
+                <div class="hanzi-item" data-hanzi="目" data-pinyin="mù" data-strokes="5" data-words='[{"word":"目光","pinyin":"mù guāng","meaning":"gaze"},{"word":"眼目","pinyin":"yǎn mù","meaning":"eyes"},{"word":"目的","pinyin":"mù dì","meaning":"purpose"}]'>目</div>
+                <div class="hanzi-item" data-hanzi="耳" data-pinyin="ěr" data-strokes="6" data-words='[{"word":"耳朵","pinyin":"ěr duo","meaning":"ear"},{"word":"耳机","pinyin":"ěr jī","meaning":"earphones"},{"word":"木耳","pinyin":"mù ěr","meaning":"wood ear"}]'>耳</div>
+                <div class="hanzi-item" data-hanzi="口" data-pinyin="kǒu" data-strokes="3" data-words='[{"word":"口水","pinyin":"kǒu shuǐ","meaning":"saliva"},{"word":"门口","pinyin":"mén kǒu","meaning":"door"},{"word":"入口","pinyin":"rù kǒu","meaning":"entrance"}]'>口</div>
+                <div class="hanzi-item" data-hanzi="心" data-pinyin="xīn" data-strokes="4" data-words='[{"word":"心情","pinyin":"xīn qíng","meaning":"mood"},{"word":"爱心","pinyin":"ài xīn","meaning":"love"},{"word":"开心","pinyin":"kāi xīn","meaning":"happy"}]'>心</div>
+                <div class="hanzi-item" data-hanzi="子" data-pinyin="zǐ" data-strokes="3" data-words='[{"word":"孩子","pinyin":"hái zi","meaning":"child"},{"word":"儿子","pinyin":"ér zi","meaning":"son"},{"word":"子女","pinyin":"zǐ nǚ","meaning":"children"}]'>子</div>
+                <div class="hanzi-item" data-hanzi="女" data-pinyin="nǚ" data-strokes="3" data-words='[{"word":"女儿","pinyin":"nǚ ér","meaning":"daughter"},{"word":"女人","pinyin":"nǚ rén","meaning":"woman"},{"word":"女生","pinyin":"nǚ shēng","meaning":"female student"}]'>女</div>
+                <div class="hanzi-item" data-hanzi="父" data-pinyin="fù" data-strokes="4" data-words='[{"word":"父亲","pinyin":"fù qīn","meaning":"father"},{"word":"祖父","pinyin":"zǔ fù","meaning":"grandfather"},{"word":"父母","pinyin":"fù mǔ","meaning":"parents"}]'>父</div>
+                <div class="hanzi-item" data-hanzi="母" data-pinyin="mǔ" data-strokes="5" data-words='[{"word":"母亲","pinyin":"mǔ qīn","meaning":"mother"},{"word":"父母","pinyin":"fù mǔ","meaning":"parents"},{"word":"祖母","pinyin":"zǔ mǔ","meaning":"grandmother"}]'>母</div>
+            </div>
+
+            <div class="hanzi-detail" id="hanziDetail">
+                <button class="close-detail" onclick="closeDetail()">&times;</button>
+                <div class="hanzi-detail-header">
+                    <div class="hanzi-big" id="detailHanzi">人</div>
+                    <div class="hanzi-info">
+                        <h2 id="detailWord">人</h2>
+                        <p><strong>拼音：</strong><span id="detailPinyin">rén</span></p>
+                        <p><strong>笔画数：</strong><span id="detailStrokes">2</span> 画</p>
+                    </div>
+                </div>
+                
+                <div class="hanzi-strokes">
+                    <h3>笔顺展示</h3>
+                    <div class="stroke-order" id="strokeOrder">
+                        <div class="stroke-item">
+                            <span>丿</span>
+                            <small>撇</small>
+                        </div>
+                        <div class="stroke-item">
+                            <span>乀</span>
+                            <small>捺</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hanzi-words">
+                    <h3>组词练习</h3>
+                    <div class="word-list" id="wordList">
+                        <div class="word-item">
+                            <div class="word">人们</div>
+                            <div class="pinyin">rén men</div>
+                            <div class="meaning">people</div>
+                        </div>
+                        <div class="word-item">
+                            <div class="word">大人</div>
+                            <div class="pinyin">dà rén</div>
+                            <div class="meaning">adult</div>
+                        </div>
+                        <div class="word-item">
+                            <div class="word">人生</div>
+                            <div class="pinyin">rén shēng</div>
+                            <div class="meaning">life</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 小正启 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 点击汉字显示详情
+        document.querySelectorAll('.hanzi-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const hanzi = this.getAttribute('data-hanzi');
+                const pinyin = this.getAttribute('data-pinyin');
+                const strokes = this.getAttribute('data-strokes');
+                const wordsStr = this.getAttribute('data-words');
+                const words = JSON.parse(wordsStr);
+
+                // 更新详情内容
+                document.getElementById('detailHanzi').textContent = hanzi;
+                document.getElementById('detailWord').textContent = hanzi;
+                document.getElementById('detailPinyin').textContent = pinyin;
+                document.getElementById('detailStrokes').textContent = strokes;
+
+                // 生成笔顺
+                const strokeOrder = document.getElementById('strokeOrder');
+                let strokeHTML = '';
+                for (let i = 1; i <= strokes; i++) {
+                    const strokeNames = ['横', '竖', '撇', '点', '折', '捺', '提'];
+                    const strokeName = strokeNames[(i - 1) % strokeNames.length];
+                    strokeHTML += `
+                        <div class="stroke-item">
+                            <span>第${i}笔</span>
+                            <small>${strokeName}</small>
+                        </div>
+                    `;
+                }
+                strokeOrder.innerHTML = strokeHTML;
+
+                // 生成词语列表
+                const wordList = document.getElementById('wordList');
+                let wordHTML = '';
+                words.forEach(word => {
+                    wordHTML += `
+                        <div class="word-item">
+                            <div class="word">${word.word}</div>
+                            <div class="pinyin">${word.pinyin}</div>
+                            <div class="meaning">${word.meaning}</div>
+                        </div>
+                    `;
+                });
+                wordList.innerHTML = wordHTML;
+
+                // 显示详情
+                document.getElementById('hanziDetail').classList.add('active');
+
+                // 滚动到详情部分
+                document.getElementById('hanziDetail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                // 更新选中状态
+                document.querySelectorAll('.hanzi-item').forEach(i => i.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // 关闭详情
+        function closeDetail() {
+            document.getElementById('hanziDetail').classList.remove('active');
+            document.querySelectorAll('.hanzi-item').forEach(i => i.classList.remove('selected'));
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.backgroundColor = 'rgba(74, 111, 165, 0.98)';
+                header.style.padding = '15px 0';
+            } else {
+                header.style.backgroundColor = 'rgba(74, 111, 165, 0.95)';
+                header.style.padding = '20px 0';
+            }
+        });
+
+        // 移动端菜单
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', function () {
+            navLinks.classList.toggle('active');
+        });
+
+        // 点击菜单项后关闭菜单
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function () {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
