@@ -1433,15 +1433,31 @@
 
                         console.log(`Created stroke writer for stroke ${i}`);
 
-                        // 显示从第一笔到当前笔的所有笔画
-                        strokeWriter.animateCharacter({
-                            strokeAnimationSpeed: 0, // 立即显示
-                            onComplete: function () {
-                                // 动画完成后，显示从第一笔到当前笔的所有笔画
-                                strokeWriter.showUpToStroke(i - 1);
-                                console.log(`Showing up to stroke ${i}`);
+                        // 尝试不同的方法来实现累积显示
+                        try {
+                            // 先清除画布
+                            strokeWriter.clear();
+
+                            // 绘制从第一笔到当前笔的所有笔画
+                            for (let j = 0; j < i; j++) {
+                                strokeWriter.drawStroke(j);
                             }
-                        });
+
+                            console.log(`Drew strokes 1 to ${i}`);
+                        } catch (drawError) {
+                            console.error(`Error drawing strokes:`, drawError);
+                            // 尝试另一种方法
+                            strokeWriter.animateCharacter({
+                                strokeAnimationSpeed: 0.5, // 慢速动画
+                                onComplete: function () {
+                                    // 动画完成后，隐藏后续笔画
+                                    for (let j = i; j < strokes.length; j++) {
+                                        strokeWriter.hideStroke(j);
+                                    }
+                                    console.log(`Hid strokes ${i + 1} to ${strokes.length}`);
+                                }
+                            });
+                        }
                     } catch (error) {
                         console.error(`Error initializing stroke ${i}:`, error);
                         // 出错时显示笔画名称作为后备
