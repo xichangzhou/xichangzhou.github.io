@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -208,11 +209,52 @@
             margin-bottom: 30px;
         }
 
+        .hanzi-big-container {
+            position: relative;
+            display: inline-block;
+        }
+
         .hanzi-big {
             font-size: 8rem;
             font-weight: bold;
             color: #4a6fa5;
             line-height: 1;
+        }
+
+        .speaker-button {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .speaker-button:hover {
+            background-color: #3a5a85;
+            transform: scale(1.05);
+        }
+
+        .speaker-button.playing {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         .hanzi-info {
@@ -253,6 +295,20 @@
             padding: 15px 20px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stroke-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border: 2px solid #ffd700;
+        }
+
+        .stroke-item.active {
+            border: 3px solid #4a6fa5;
+            background-color: #e8f4fd;
         }
 
         .stroke-item span {
@@ -265,6 +321,166 @@
         .stroke-item small {
             font-size: 0.9rem;
             color: #999;
+        }
+
+        .stroke-item .trace-btn {
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffd700;
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            padding: 3px 8px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stroke-item:hover .trace-btn {
+            opacity: 1;
+        }
+
+        /* 临摹区域 */
+        .tracing-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .tracing-section h3 {
+            font-size: 1.5rem;
+            color: #4a6fa5;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tracing-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tracing-tab {
+            background-color: #f5f5f5;
+            color: #333;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tracing-tab:hover {
+            background-color: #e0e0e0;
+        }
+
+        .tracing-tab.active {
+            background-color: #4a6fa5;
+            color: white;
+        }
+
+        .tracing-canvas-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            border: 3px solid #4a6fa5;
+            border-radius: 10px;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        .tracing-canvas-container canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .tracing-guide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            color: rgba(74, 111, 165, 0.2);
+            font-weight: bold;
+        }
+
+        .tracing-guide.stroke-guide {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(74, 111, 165, 0.3);
+        }
+
+        .tracing-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .tracing-btn {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tracing-btn:hover {
+            background-color: #3a5a85;
+            transform: translateY(-2px);
+        }
+
+        .tracing-btn.clear {
+            background-color: #e74c3c;
+        }
+
+        .tracing-btn.clear:hover {
+            background-color: #c0392b;
+        }
+
+        .tracing-btn.show-guide {
+            background-color: #27ae60;
+        }
+
+        .tracing-btn.show-guide:hover {
+            background-color: #229954;
+        }
+
+        .stroke-tracing-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stroke-tracing-container.active {
+            display: flex;
+        }
+
+        .complete-tracing-container {
+            display: none;
+        }
+
+        .complete-tracing-container.active {
+            display: flex;
         }
 
         .hanzi-words {
@@ -419,6 +635,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -426,6 +643,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="container">
@@ -461,56 +679,153 @@
     <section class="hanzi-section">
         <div class="container">
             <h2 class="section-title">常用汉字</h2>
-            
+
             <div class="hanzi-grid">
-                <div class="hanzi-item" data-hanzi="一" data-pinyin="yī" data-strokes="1" data-words='[{"word":"一天","pinyin":"yī tiān","meaning":"one day"},{"word":"一个","pinyin":"yī gè","meaning":"one"},{"word":"第一","pinyin":"dì yī","meaning":"first"}]'>一</div>
-                <div class="hanzi-item" data-hanzi="二" data-pinyin="èr" data-strokes="2" data-words='[{"word":"二月","pinyin":"èr yuè","meaning":"February"},{"word":"第二","pinyin":"dì èr","meaning":"second"},{"word":"二十","pinyin":"èr shí","meaning":"twenty"}]'>二</div>
-                <div class="hanzi-item" data-hanzi="三" data-pinyin="sān" data-strokes="3" data-words='[{"word":"三月","pinyin":"sān yuè","meaning":"March"},{"word":"三个","pinyin":"sān gè","meaning":"three"},{"word":"第三","pinyin":"dì sān","meaning":"third"}]'>三</div>
-                <div class="hanzi-item" data-hanzi="人" data-pinyin="rén" data-strokes="2" data-words='[{"word":"人们","pinyin":"rén men","meaning":"people"},{"word":"大人","pinyin":"dà rén","meaning":"adult"},{"word":"人生","pinyin":"rén shēng","meaning":"life"}]'>人</div>
-                <div class="hanzi-item" data-hanzi="大" data-pinyin="dà" data-strokes="3" data-words='[{"word":"大人","pinyin":"dà rén","meaning":"adult"},{"word":"大家","pinyin":"dà jiā","meaning":"everyone"},{"word":"大小","pinyin":"dà xiǎo","meaning":"size"}]'>大</div>
-                <div class="hanzi-item" data-hanzi="小" data-pinyin="xiǎo" data-strokes="3" data-words='[{"word":"小孩","pinyin":"xiǎo hái","meaning":"child"},{"word":"大小","pinyin":"dà xiǎo","meaning":"size"},{"word":"小朋友","pinyin":"xiǎo péng yǒu","meaning":"little friend"}]'>小</div>
-                <div class="hanzi-item" data-hanzi="中" data-pinyin="zhōng" data-strokes="4" data-words='[{"word":"中国","pinyin":"zhōng guó","meaning":"China"},{"word":"中间","pinyin":"zhōng jiān","meaning":"middle"},{"word":"中午","pinyin":"zhōng wǔ","meaning":"noon"}]'>中</div>
-                <div class="hanzi-item" data-hanzi="国" data-pinyin="guó" data-strokes="8" data-words='[{"word":"中国","pinyin":"zhōng guó","meaning":"China"},{"word":"国家","pinyin":"guó jiā","meaning":"country"},{"word":"外国","pinyin":"wài guó","meaning":"foreign country"}]'>国</div>
-                <div class="hanzi-item" data-hanzi="天" data-pinyin="tiān" data-strokes="4" data-words='[{"word":"今天","pinyin":"jīn tiān","meaning":"today"},{"word":"明天","pinyin":"míng tiān","meaning":"tomorrow"},{"word":"一天","pinyin":"yī tiān","meaning":"one day"}]'>天</div>
-                <div class="hanzi-item" data-hanzi="日" data-pinyin="rì" data-strokes="4" data-words='[{"word":"生日","pinyin":"shēng rì","meaning":"birthday"},{"word":"日记","pinyin":"rì jì","meaning":"diary"},{"word":"日子","pinyin":"rì zi","meaning":"day"}]'>日</div>
-                <div class="hanzi-item" data-hanzi="月" data-pinyin="yuè" data-strokes="4" data-words='[{"word":"月亮","pinyin":"yuè liang","meaning":"moon"},{"word":"月份","pinyin":"yuè fèn","meaning":"month"},{"word":"一月","pinyin":"yī yuè","meaning":"January"}]'>月</div>
-                <div class="hanzi-item" data-hanzi="水" data-pinyin="shuǐ" data-strokes="4" data-words='[{"word":"水果","pinyin":"shuǐ guǒ","meaning":"fruit"},{"word":"喝水","pinyin":"hē shuǐ","meaning":"drink water"},{"word":"开水","pinyin":"kāi shuǐ","meaning":"boiled water"}]'>水</div>
-                <div class="hanzi-item" data-hanzi="火" data-pinyin="huǒ" data-strokes="4" data-words='[{"word":"火车","pinyin":"huǒ chē","meaning":"train"},{"word":"火山","pinyin":"huǒ shān","meaning":"volcano"},{"word":"大火","pinyin":"dà huǒ","meaning":"big fire"}]'>火</div>
-                <div class="hanzi-item" data-hanzi="山" data-pinyin="shān" data-strokes="3" data-words='[{"word":"山上","pinyin":"shān shàng","meaning":"on the mountain"},{"word":"高山","pinyin":"gāo shān","meaning":"high mountain"},{"word":"登山","pinyin":"dēng shān","meaning":"mountaineering"}]'>山</div>
-                <div class="hanzi-item" data-hanzi="口" data-pinyin="kǒu" data-strokes="3" data-words='[{"word":"口水","pinyin":"kǒu shuǐ","meaning":"saliva"},{"word":"门口","pinyin":"mén kǒu","meaning":"door"},{"word":"入口","pinyin":"rù kǒu","meaning":"entrance"}]'>口</div>
-                <div class="hanzi-item" data-hanzi="手" data-pinyin="shǒu" data-strokes="4" data-words='[{"word":"手机","pinyin":"shǒu jī","meaning":"mobile phone"},{"word":"左手","pinyin":"zuǒ shǒu","meaning":"left hand"},{"word":"右手","pinyin":"yòu shǒu","meaning":"right hand"}]'>手</div>
-                <div class="hanzi-item" data-hanzi="足" data-pinyin="zú" data-strokes="7" data-words='[{"word":"足球","pinyin":"zú qiú","meaning":"football"},{"word":"手足","pinyin":"shǒu zú","meaning":"brothers"},{"word":"满足","pinyin":"mǎn zú","meaning":"satisfied"}]'>足</div>
-                <div class="hanzi-item" data-hanzi="目" data-pinyin="mù" data-strokes="5" data-words='[{"word":"目光","pinyin":"mù guāng","meaning":"gaze"},{"word":"眼目","pinyin":"yǎn mù","meaning":"eyes"},{"word":"目的","pinyin":"mù dì","meaning":"purpose"}]'>目</div>
-                <div class="hanzi-item" data-hanzi="耳" data-pinyin="ěr" data-strokes="6" data-words='[{"word":"耳朵","pinyin":"ěr duo","meaning":"ear"},{"word":"耳机","pinyin":"ěr jī","meaning":"earphones"},{"word":"木耳","pinyin":"mù ěr","meaning":"wood ear"}]'>耳</div>
-                <div class="hanzi-item" data-hanzi="口" data-pinyin="kǒu" data-strokes="3" data-words='[{"word":"口水","pinyin":"kǒu shuǐ","meaning":"saliva"},{"word":"门口","pinyin":"mén kǒu","meaning":"door"},{"word":"入口","pinyin":"rù kǒu","meaning":"entrance"}]'>口</div>
-                <div class="hanzi-item" data-hanzi="心" data-pinyin="xīn" data-strokes="4" data-words='[{"word":"心情","pinyin":"xīn qíng","meaning":"mood"},{"word":"爱心","pinyin":"ài xīn","meaning":"love"},{"word":"开心","pinyin":"kāi xīn","meaning":"happy"}]'>心</div>
-                <div class="hanzi-item" data-hanzi="子" data-pinyin="zǐ" data-strokes="3" data-words='[{"word":"孩子","pinyin":"hái zi","meaning":"child"},{"word":"儿子","pinyin":"ér zi","meaning":"son"},{"word":"子女","pinyin":"zǐ nǚ","meaning":"children"}]'>子</div>
-                <div class="hanzi-item" data-hanzi="女" data-pinyin="nǚ" data-strokes="3" data-words='[{"word":"女儿","pinyin":"nǚ ér","meaning":"daughter"},{"word":"女人","pinyin":"nǚ rén","meaning":"woman"},{"word":"女生","pinyin":"nǚ shēng","meaning":"female student"}]'>女</div>
-                <div class="hanzi-item" data-hanzi="父" data-pinyin="fù" data-strokes="4" data-words='[{"word":"父亲","pinyin":"fù qīn","meaning":"father"},{"word":"祖父","pinyin":"zǔ fù","meaning":"grandfather"},{"word":"父母","pinyin":"fù mǔ","meaning":"parents"}]'>父</div>
-                <div class="hanzi-item" data-hanzi="母" data-pinyin="mǔ" data-strokes="5" data-words='[{"word":"母亲","pinyin":"mǔ qīn","meaning":"mother"},{"word":"父母","pinyin":"fù mǔ","meaning":"parents"},{"word":"祖母","pinyin":"zǔ mǔ","meaning":"grandmother"}]'>母</div>
+                <div class="hanzi-item" data-hanzi="一" data-pinyin="yī" data-strokes="1"
+                    data-words='[{"word":"一天","pinyin":"yī tiān","meaning":"one day"},{"word":"一个","pinyin":"yī gè","meaning":"one"},{"word":"第一","pinyin":"dì yī","meaning":"first"}]'>
+                    一</div>
+                <div class="hanzi-item" data-hanzi="二" data-pinyin="èr" data-strokes="2"
+                    data-words='[{"word":"二月","pinyin":"èr yuè","meaning":"February"},{"word":"第二","pinyin":"dì èr","meaning":"second"},{"word":"二十","pinyin":"èr shí","meaning":"twenty"}]'>
+                    二</div>
+                <div class="hanzi-item" data-hanzi="三" data-pinyin="sān" data-strokes="3"
+                    data-words='[{"word":"三月","pinyin":"sān yuè","meaning":"March"},{"word":"三个","pinyin":"sān gè","meaning":"three"},{"word":"第三","pinyin":"dì sān","meaning":"third"}]'>
+                    三</div>
+                <div class="hanzi-item" data-hanzi="人" data-pinyin="rén" data-strokes="2"
+                    data-words='[{"word":"人们","pinyin":"rén men","meaning":"people"},{"word":"大人","pinyin":"dà rén","meaning":"adult"},{"word":"人生","pinyin":"rén shēng","meaning":"life"}]'>
+                    人</div>
+                <div class="hanzi-item" data-hanzi="大" data-pinyin="dà" data-strokes="3"
+                    data-words='[{"word":"大人","pinyin":"dà rén","meaning":"adult"},{"word":"大家","pinyin":"dà jiā","meaning":"everyone"},{"word":"大小","pinyin":"dà xiǎo","meaning":"size"}]'>
+                    大</div>
+                <div class="hanzi-item" data-hanzi="小" data-pinyin="xiǎo" data-strokes="3"
+                    data-words='[{"word":"小孩","pinyin":"xiǎo hái","meaning":"child"},{"word":"大小","pinyin":"dà xiǎo","meaning":"size"},{"word":"小朋友","pinyin":"xiǎo péng yǒu","meaning":"little friend"}]'>
+                    小</div>
+                <div class="hanzi-item" data-hanzi="中" data-pinyin="zhōng" data-strokes="4"
+                    data-words='[{"word":"中国","pinyin":"zhōng guó","meaning":"China"},{"word":"中间","pinyin":"zhōng jiān","meaning":"middle"},{"word":"中午","pinyin":"zhōng wǔ","meaning":"noon"}]'>
+                    中</div>
+                <div class="hanzi-item" data-hanzi="国" data-pinyin="guó" data-strokes="8"
+                    data-words='[{"word":"中国","pinyin":"zhōng guó","meaning":"China"},{"word":"国家","pinyin":"guó jiā","meaning":"country"},{"word":"外国","pinyin":"wài guó","meaning":"foreign country"}]'>
+                    国</div>
+                <div class="hanzi-item" data-hanzi="天" data-pinyin="tiān" data-strokes="4"
+                    data-words='[{"word":"今天","pinyin":"jīn tiān","meaning":"today"},{"word":"明天","pinyin":"míng tiān","meaning":"tomorrow"},{"word":"一天","pinyin":"yī tiān","meaning":"one day"}]'>
+                    天</div>
+                <div class="hanzi-item" data-hanzi="日" data-pinyin="rì" data-strokes="4"
+                    data-words='[{"word":"生日","pinyin":"shēng rì","meaning":"birthday"},{"word":"日记","pinyin":"rì jì","meaning":"diary"},{"word":"日子","pinyin":"rì zi","meaning":"day"}]'>
+                    日</div>
+                <div class="hanzi-item" data-hanzi="月" data-pinyin="yuè" data-strokes="4"
+                    data-words='[{"word":"月亮","pinyin":"yuè liang","meaning":"moon"},{"word":"月份","pinyin":"yuè fèn","meaning":"month"},{"word":"一月","pinyin":"yī yuè","meaning":"January"}]'>
+                    月</div>
+                <div class="hanzi-item" data-hanzi="水" data-pinyin="shuǐ" data-strokes="4"
+                    data-words='[{"word":"水果","pinyin":"shuǐ guǒ","meaning":"fruit"},{"word":"喝水","pinyin":"hē shuǐ","meaning":"drink water"},{"word":"开水","pinyin":"kāi shuǐ","meaning":"boiled water"}]'>
+                    水</div>
+                <div class="hanzi-item" data-hanzi="火" data-pinyin="huǒ" data-strokes="4"
+                    data-words='[{"word":"火车","pinyin":"huǒ chē","meaning":"train"},{"word":"火山","pinyin":"huǒ shān","meaning":"volcano"},{"word":"大火","pinyin":"dà huǒ","meaning":"big fire"}]'>
+                    火</div>
+                <div class="hanzi-item" data-hanzi="山" data-pinyin="shān" data-strokes="3"
+                    data-words='[{"word":"山上","pinyin":"shān shàng","meaning":"on the mountain"},{"word":"高山","pinyin":"gāo shān","meaning":"high mountain"},{"word":"登山","pinyin":"dēng shān","meaning":"mountaineering"}]'>
+                    山</div>
+                <div class="hanzi-item" data-hanzi="口" data-pinyin="kǒu" data-strokes="3"
+                    data-words='[{"word":"口水","pinyin":"kǒu shuǐ","meaning":"saliva"},{"word":"门口","pinyin":"mén kǒu","meaning":"door"},{"word":"入口","pinyin":"rù kǒu","meaning":"entrance"}]'>
+                    口</div>
+                <div class="hanzi-item" data-hanzi="手" data-pinyin="shǒu" data-strokes="4"
+                    data-words='[{"word":"手机","pinyin":"shǒu jī","meaning":"mobile phone"},{"word":"左手","pinyin":"zuǒ shǒu","meaning":"left hand"},{"word":"右手","pinyin":"yòu shǒu","meaning":"right hand"}]'>
+                    手</div>
+                <div class="hanzi-item" data-hanzi="足" data-pinyin="zú" data-strokes="7"
+                    data-words='[{"word":"足球","pinyin":"zú qiú","meaning":"football"},{"word":"手足","pinyin":"shǒu zú","meaning":"brothers"},{"word":"满足","pinyin":"mǎn zú","meaning":"satisfied"}]'>
+                    足</div>
+                <div class="hanzi-item" data-hanzi="目" data-pinyin="mù" data-strokes="5"
+                    data-words='[{"word":"目光","pinyin":"mù guāng","meaning":"gaze"},{"word":"眼目","pinyin":"yǎn mù","meaning":"eyes"},{"word":"目的","pinyin":"mù dì","meaning":"purpose"}]'>
+                    目</div>
+                <div class="hanzi-item" data-hanzi="耳" data-pinyin="ěr" data-strokes="6"
+                    data-words='[{"word":"耳朵","pinyin":"ěr duo","meaning":"ear"},{"word":"耳机","pinyin":"ěr jī","meaning":"earphones"},{"word":"木耳","pinyin":"mù ěr","meaning":"wood ear"}]'>
+                    耳</div>
+                <div class="hanzi-item" data-hanzi="口" data-pinyin="kǒu" data-strokes="3"
+                    data-words='[{"word":"口水","pinyin":"kǒu shuǐ","meaning":"saliva"},{"word":"门口","pinyin":"mén kǒu","meaning":"door"},{"word":"入口","pinyin":"rù kǒu","meaning":"entrance"}]'>
+                    口</div>
+                <div class="hanzi-item" data-hanzi="心" data-pinyin="xīn" data-strokes="4"
+                    data-words='[{"word":"心情","pinyin":"xīn qíng","meaning":"mood"},{"word":"爱心","pinyin":"ài xīn","meaning":"love"},{"word":"开心","pinyin":"kāi xīn","meaning":"happy"}]'>
+                    心</div>
+                <div class="hanzi-item" data-hanzi="子" data-pinyin="zǐ" data-strokes="3"
+                    data-words='[{"word":"孩子","pinyin":"hái zi","meaning":"child"},{"word":"儿子","pinyin":"ér zi","meaning":"son"},{"word":"子女","pinyin":"zǐ nǚ","meaning":"children"}]'>
+                    子</div>
+                <div class="hanzi-item" data-hanzi="女" data-pinyin="nǚ" data-strokes="3"
+                    data-words='[{"word":"女儿","pinyin":"nǚ ér","meaning":"daughter"},{"word":"女人","pinyin":"nǚ rén","meaning":"woman"},{"word":"女生","pinyin":"nǚ shēng","meaning":"female student"}]'>
+                    女</div>
+                <div class="hanzi-item" data-hanzi="父" data-pinyin="fù" data-strokes="4"
+                    data-words='[{"word":"父亲","pinyin":"fù qīn","meaning":"father"},{"word":"祖父","pinyin":"zǔ fù","meaning":"grandfather"},{"word":"父母","pinyin":"fù mǔ","meaning":"parents"}]'>
+                    父</div>
+                <div class="hanzi-item" data-hanzi="母" data-pinyin="mǔ" data-strokes="5"
+                    data-words='[{"word":"母亲","pinyin":"mǔ qīn","meaning":"mother"},{"word":"父母","pinyin":"fù mǔ","meaning":"parents"},{"word":"祖母","pinyin":"zǔ mǔ","meaning":"grandmother"}]'>
+                    母</div>
             </div>
 
             <div class="hanzi-detail" id="hanziDetail">
                 <button class="close-detail" onclick="closeDetail()">&times;</button>
                 <div class="hanzi-detail-header">
-                    <div class="hanzi-big" id="detailHanzi">人</div>
+                    <div class="hanzi-big-container">
+                        <div class="hanzi-big" id="detailHanzi">人</div>
+                    </div>
                     <div class="hanzi-info">
                         <h2 id="detailWord">人</h2>
                         <p><strong>拼音：</strong><span id="detailPinyin">rén</span></p>
                         <p><strong>笔画数：</strong><span id="detailStrokes">2</span> 画</p>
+                        <button class="speaker-button" id="speakerBtn" onclick="speakCharacter()">
+                            <i class="fas fa-volume-up"></i> 发音
+                        </button>
                     </div>
                 </div>
-                
+
                 <div class="hanzi-strokes">
-                    <h3>笔顺展示</h3>
+                    <h3>笔顺展示（点击"临摹"开始练习）</h3>
                     <div class="stroke-order" id="strokeOrder">
                         <div class="stroke-item">
                             <span>丿</span>
                             <small>撇</small>
+                            <button class="trace-btn" onclick="startStrokeTrace(1)">临摹</button>
                         </div>
                         <div class="stroke-item">
                             <span>乀</span>
                             <small>捺</small>
+                            <button class="trace-btn" onclick="startStrokeTrace(2)">临摹</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tracing-section">
+                    <h3><i class="fas fa-pen"></i> 临摹练习</h3>
+                    <div class="tracing-tabs">
+                        <button class="tracing-tab active" onclick="switchTracingTab('stroke')">笔画临摹</button>
+                        <button class="tracing-tab" onclick="switchTracingTab('complete')">完整字临摹</button>
+                    </div>
+
+                    <div class="stroke-tracing-container active" id="strokeTraceContainer">
+                        <p style="margin-bottom: 15px; color: #666;">当前练习第 <span id="currentStrokeNum">1</span> 笔</p>
+                        <div class="tracing-canvas-container">
+                            <div class="tracing-guide stroke-guide" id="strokeTraceGuide">人</div>
+                            <canvas id="strokeCanvas" width="200" height="200"></canvas>
+                        </div>
+                        <div class="tracing-controls">
+                            <button class="tracing-btn show-guide" onclick="toggleStrokeGuide()">
+                                <i class="fas fa-eye"></i> 显示提示
+                            </button>
+                            <button class="tracing-btn clear" onclick="clearStrokeCanvas()">
+                                <i class="fas fa-eraser"></i> 清除
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="complete-tracing-container" id="completeTraceContainer">
+                        <p style="margin-bottom: 15px; color: #666;">请临摹下面的汉字</p>
+                        <div class="tracing-canvas-container">
+                            <div class="tracing-guide" id="completeTraceGuide">人</div>
+                            <canvas id="completeCanvas" width="200" height="200"></canvas>
+                        </div>
+                        <div class="tracing-controls">
+                            <button class="tracing-btn show-guide" onclick="toggleCompleteGuide()">
+                                <i class="fas fa-eye"></i> 显示提示
+                            </button>
+                            <button class="tracing-btn clear" onclick="clearCompleteCanvas()">
+                                <i class="fas fa-eraser"></i> 清除
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -546,31 +861,285 @@
     </footer>
 
     <script>
+        // 当前选中的汉字和拼音
+        let currentHanzi = '';
+        let currentPinyin = '';
+        let currentStrokes = 0;
+        let currentStrokeIndex = 1;
+        let showStrokeGuide = true;
+        let showCompleteGuide = true;
+
+        // 画布上下文
+        let strokeCtx, completeCtx;
+        let isDrawing = false;
+        let lastX = 0, lastY = 0;
+
+        // 初始化画布
+        function initCanvases() {
+            const strokeCanvas = document.getElementById('strokeCanvas');
+            const completeCanvas = document.getElementById('completeCanvas');
+            strokeCtx = strokeCanvas.getContext('2d');
+            completeCtx = completeCanvas.getContext('2d');
+
+            // 设置画布属性
+            [strokeCtx, completeCtx].forEach(ctx => {
+                ctx.strokeStyle = '#4a6fa5';
+                ctx.lineWidth = 8;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+            });
+
+            // 笔画画布绑定事件
+            strokeCanvas.addEventListener('mousedown', startDrawing);
+            strokeCanvas.addEventListener('mousemove', draw);
+            strokeCanvas.addEventListener('mouseup', stopDrawing);
+            strokeCanvas.addEventListener('mouseout', stopDrawing);
+
+            // 笔画画布触摸事件
+            strokeCanvas.addEventListener('touchstart', handleTouchStart);
+            strokeCanvas.addEventListener('touchmove', handleTouchMove);
+            strokeCanvas.addEventListener('touchend', stopDrawing);
+
+            // 完整画布绑定事件
+            completeCanvas.addEventListener('mousedown', startDrawingComplete);
+            completeCanvas.addEventListener('mousemove', drawComplete);
+            completeCanvas.addEventListener('mouseup', stopDrawing);
+            completeCanvas.addEventListener('mouseout', stopDrawing);
+
+            // 完整画布触摸事件
+            completeCanvas.addEventListener('touchstart', handleTouchStartComplete);
+            completeCanvas.addEventListener('touchmove', handleTouchMoveComplete);
+            completeCanvas.addEventListener('touchend', stopDrawing);
+        }
+
+        // 语音朗读功能
+        function speakCharacter() {
+            if (!currentHanzi) return;
+
+            const speakerBtn = document.getElementById('speakerBtn');
+            speakerBtn.classList.add('playing');
+
+            // 使用 Web Speech API 朗读
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(currentHanzi);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+
+                utterance.onend = function () {
+                    speakerBtn.classList.remove('playing');
+                };
+
+                utterance.onerror = function () {
+                    speakerBtn.classList.remove('playing');
+                };
+
+                speechSynthesis.speak(utterance);
+            } else {
+                speakerBtn.classList.remove('playing');
+                alert('抱歉，您的浏览器不支持语音朗读功能');
+            }
+        }
+
+        // 开始笔画临摹
+        function startStrokeTrace(strokeIndex) {
+            currentStrokeIndex = strokeIndex;
+            document.getElementById('currentStrokeNum').textContent = strokeIndex;
+
+            // 更新笔顺项的激活状态
+            document.querySelectorAll('.stroke-item').forEach((item, index) => {
+                if (index + 1 === strokeIndex) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            // 切换到笔画临摹标签
+            switchTracingTab('stroke');
+
+            // 更新临摹提示
+            const strokeTraceGuide = document.getElementById('strokeTraceGuide');
+            strokeTraceGuide.textContent = currentHanzi;
+            strokeTraceGuide.style.webkitTextStroke = '1px rgba(74, 111, 165, 0.3)';
+
+            // 清除画布
+            clearStrokeCanvas();
+
+            // 滚动到临摹区域
+            document.querySelector('.tracing-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 切换临摹标签
+        function switchTracingTab(tab) {
+            const tabs = document.querySelectorAll('.tracing-tab');
+            const strokeContainer = document.getElementById('strokeTraceContainer');
+            const completeContainer = document.getElementById('completeTraceContainer');
+
+            tabs.forEach(t => t.classList.remove('active'));
+
+            if (tab === 'stroke') {
+                tabs[0].classList.add('active');
+                strokeContainer.classList.add('active');
+                completeContainer.classList.remove('active');
+            } else {
+                tabs[1].classList.add('active');
+                strokeContainer.classList.remove('active');
+                completeContainer.classList.add('active');
+
+                // 更新完整字临摹提示
+                const completeTraceGuide = document.getElementById('completeTraceGuide');
+                completeTraceGuide.textContent = currentHanzi;
+                clearCompleteCanvas();
+            }
+        }
+
+        // 画布绘制函数 - 笔画
+        function startDrawing(e) {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            strokeCtx.beginPath();
+            strokeCtx.moveTo(lastX, lastY);
+            strokeCtx.lineTo(e.offsetX, e.offsetY);
+            strokeCtx.stroke();
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // 触摸事件处理 - 笔画
+        function handleTouchStart(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = e.target.getBoundingClientRect();
+            isDrawing = true;
+            lastX = touch.clientX - rect.left;
+            lastY = touch.clientY - rect.top;
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            if (!isDrawing) return;
+            const touch = e.touches[0];
+            const rect = e.target.getBoundingClientRect();
+            strokeCtx.beginPath();
+            strokeCtx.moveTo(lastX, lastY);
+            strokeCtx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+            strokeCtx.stroke();
+            lastX = touch.clientX - rect.left;
+            lastY = touch.clientY - rect.top;
+        }
+
+        // 画布绘制函数 - 完整字
+        function startDrawingComplete(e) {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+
+        function drawComplete(e) {
+            if (!isDrawing) return;
+            completeCtx.beginPath();
+            completeCtx.moveTo(lastX, lastY);
+            completeCtx.lineTo(e.offsetX, e.offsetY);
+            completeCtx.stroke();
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+
+        // 触摸事件处理 - 完整字
+        function handleTouchStartComplete(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = e.target.getBoundingClientRect();
+            isDrawing = true;
+            lastX = touch.clientX - rect.left;
+            lastY = touch.clientY - rect.top;
+        }
+
+        function handleTouchMoveComplete(e) {
+            e.preventDefault();
+            if (!isDrawing) return;
+            const touch = e.touches[0];
+            const rect = e.target.getBoundingClientRect();
+            completeCtx.beginPath();
+            completeCtx.moveTo(lastX, lastY);
+            completeCtx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+            completeCtx.stroke();
+            lastX = touch.clientX - rect.left;
+            lastY = touch.clientY - rect.top;
+        }
+
+        // 清除画布
+        function clearStrokeCanvas() {
+            const canvas = document.getElementById('strokeCanvas');
+            strokeCtx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function clearCompleteCanvas() {
+            const canvas = document.getElementById('completeCanvas');
+            completeCtx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // 切换提示显示
+        function toggleStrokeGuide() {
+            showStrokeGuide = !showStrokeGuide;
+            const guide = document.getElementById('strokeTraceGuide');
+            const btn = event.target.closest('.tracing-btn');
+
+            if (showStrokeGuide) {
+                guide.style.webkitTextStroke = '1px rgba(74, 111, 165, 0.3)';
+                btn.innerHTML = '<i class="fas fa-eye"></i> 显示提示';
+            } else {
+                guide.style.webkitTextStroke = '0px';
+                btn.innerHTML = '<i class="fas fa-eye-slash"></i> 隐藏提示';
+            }
+        }
+
+        function toggleCompleteGuide() {
+            showCompleteGuide = !showCompleteGuide;
+            const guide = document.getElementById('completeTraceGuide');
+            const btn = event.target.closest('.tracing-btn');
+
+            if (showCompleteGuide) {
+                guide.style.color = 'rgba(74, 111, 165, 0.2)';
+                btn.innerHTML = '<i class="fas fa-eye"></i> 显示提示';
+            } else {
+                guide.style.color = 'transparent';
+                btn.innerHTML = '<i class="fas fa-eye-slash"></i> 隐藏提示';
+            }
+        }
+
         // 点击汉字显示详情
         document.querySelectorAll('.hanzi-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const hanzi = this.getAttribute('data-hanzi');
-                const pinyin = this.getAttribute('data-pinyin');
-                const strokes = this.getAttribute('data-strokes');
+            item.addEventListener('click', function () {
+                currentHanzi = this.getAttribute('data-hanzi');
+                currentPinyin = this.getAttribute('data-pinyin');
+                currentStrokes = parseInt(this.getAttribute('data-strokes'));
                 const wordsStr = this.getAttribute('data-words');
                 const words = JSON.parse(wordsStr);
 
                 // 更新详情内容
-                document.getElementById('detailHanzi').textContent = hanzi;
-                document.getElementById('detailWord').textContent = hanzi;
-                document.getElementById('detailPinyin').textContent = pinyin;
-                document.getElementById('detailStrokes').textContent = strokes;
+                document.getElementById('detailHanzi').textContent = currentHanzi;
+                document.getElementById('detailWord').textContent = currentHanzi;
+                document.getElementById('detailPinyin').textContent = currentPinyin;
+                document.getElementById('detailStrokes').textContent = currentStrokes;
 
                 // 生成笔顺
                 const strokeOrder = document.getElementById('strokeOrder');
                 let strokeHTML = '';
-                for (let i = 1; i <= strokes; i++) {
+                for (let i = 1; i <= currentStrokes; i++) {
                     const strokeNames = ['横', '竖', '撇', '点', '折', '捺', '提'];
                     const strokeName = strokeNames[(i - 1) % strokeNames.length];
                     strokeHTML += `
-                        <div class="stroke-item">
+                        <div class="stroke-item" onclick="startStrokeTrace(${i})">
                             <span>第${i}笔</span>
                             <small>${strokeName}</small>
+                            <button class="trace-btn" onclick="event.stopPropagation(); startStrokeTrace(${i})">临摹</button>
                         </div>
                     `;
                 }
@@ -590,6 +1159,10 @@
                 });
                 wordList.innerHTML = wordHTML;
 
+                // 更新临摹提示
+                document.getElementById('strokeTraceGuide').textContent = currentHanzi;
+                document.getElementById('completeTraceGuide').textContent = currentHanzi;
+
                 // 显示详情
                 document.getElementById('hanziDetail').classList.add('active');
 
@@ -599,6 +1172,13 @@
                 // 更新选中状态
                 document.querySelectorAll('.hanzi-item').forEach(i => i.classList.remove('selected'));
                 this.classList.add('selected');
+
+                // 初始化画布
+                setTimeout(() => {
+                    initCanvases();
+                    clearStrokeCanvas();
+                    clearCompleteCanvas();
+                }, 100);
             });
         });
 
@@ -606,6 +1186,9 @@
         function closeDetail() {
             document.getElementById('hanziDetail').classList.remove('active');
             document.querySelectorAll('.hanzi-item').forEach(i => i.classList.remove('selected'));
+            currentHanzi = '';
+            currentPinyin = '';
+            currentStrokes = 0;
         }
 
         // 平滑滚动
@@ -646,4 +1229,5 @@
         });
     </script>
 </body>
+
 </html>
