@@ -8,6 +8,8 @@
     <meta name="description" content="小正启 - 汉字学习页面，通过有趣的互动方式学习汉字">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Hanzi Writer -->
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.2.0/dist/hanzi-writer.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -887,16 +889,21 @@
 
                 <div class="hanzi-strokes">
                     <h3>笔顺展示（点击"临摹"开始练习）</h3>
-                    <div class="stroke-order" id="strokeOrder">
-                        <div class="stroke-item">
-                            <span>丿</span>
-                            <small>撇</small>
-                            <button class="trace-btn" onclick="startStrokeTrace(1)">临摹</button>
-                        </div>
-                        <div class="stroke-item">
-                            <span>乀</span>
-                            <small>捺</small>
-                            <button class="trace-btn" onclick="startStrokeTrace(2)">临摹</button>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                        <!-- 汉字笔顺动画展示 -->
+                        <div id="hanziAnimation" style="width: 200px; height: 200px; margin-bottom: 20px;"></div>
+                        <!-- 笔画顺序列表 -->
+                        <div class="stroke-order" id="strokeOrder">
+                            <div class="stroke-item">
+                                <span>丿</span>
+                                <small>撇</small>
+                                <button class="trace-btn" onclick="startStrokeTrace(1)">临摹</button>
+                            </div>
+                            <div class="stroke-item">
+                                <span>乀</span>
+                                <small>捺</small>
+                                <button class="trace-btn" onclick="startStrokeTrace(2)">临摹</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1065,6 +1072,9 @@
                     item.classList.remove('active');
                 }
             });
+
+            // 高亮对应的笔画
+            highlightStroke(strokeIndex);
 
             // 切换到笔画临摹标签
             switchTracingTab('stroke');
@@ -1237,6 +1247,23 @@
             }
         }
 
+        // 笔画符号映射
+        const strokeSymbols = {
+            '横': '一',
+            '竖': '丨',
+            '撇': '丿',
+            '捺': '乀',
+            '点': '丶',
+            '横折': '𠃍',
+            '竖钩': '亅',
+            '横撇': '乛',
+            '竖折': '𠃊',
+            '横折钩': '𠃌',
+            '卧钩': '㇃',
+            '弯钩': '㇁',
+            '撇点': '𡿨'
+        };
+
         // 汉字笔顺数据
         const hanziStrokeData = {
             '一': ['横'],
@@ -1265,6 +1292,9 @@
             '母': ['竖折', '横折钩', '点', '横', '点']
         };
 
+        // 全局变量存储Hanzi Writer实例
+        let hanziWriterInstance = null;
+
         // 点击汉字显示详情
         document.querySelectorAll('.hanzi-item').forEach(item => {
             item.addEventListener('click', function () {
@@ -1289,7 +1319,7 @@
                     const strokeName = strokes[i - 1];
                     strokeHTML += `
                         <div class="stroke-item" onclick="startStrokeTrace(${i})">
-                            <span>第${i}笔</span>
+                            <div class="stroke-symbol" id="stroke-${i}" style="width: 50px; height: 50px; margin: 0 auto 5px;"></div>
                             <small>${strokeName}</small>
                             <button class="trace-btn" onclick="event.stopPropagation(); startStrokeTrace(${i})">临摹</button>
                         </div>
@@ -1325,14 +1355,103 @@
                 document.querySelectorAll('.hanzi-item').forEach(i => i.classList.remove('selected'));
                 this.classList.add('selected');
 
-                // 初始化画布
+                // 初始化Hanzi Writer动画
                 setTimeout(() => {
+                    initHanziWriter();
+                    // 确保DOM元素完全加载后再初始化笔画
+                    setTimeout(() => {
+                        initStrokeSymbols();
+                    }, 200);
                     initCanvases();
                     clearStrokeCanvas();
                     clearCompleteCanvas();
                 }, 100);
             });
         });
+
+        // 初始化Hanzi Writer
+        function initHanziWriter() {
+            if (hanziWriterInstance) {
+                hanziWriterInstance.destroy();
+            }
+
+            // 检查Hanzi Writer是否可用
+            if (typeof HanziWriter === 'undefined') {
+                console.error('Hanzi Writer library is not loaded');
+                return;
+            }
+
+            try {
+                hanziWriterInstance = HanziWriter.create('hanziAnimation', currentHanzi, {
+                    width: 200,
+                    height: 200,
+                    padding: 20,
+                    strokeAnimationSpeed: 1,
+                    radicalColor: '#4a6fa5',
+                    strokeColor: '#4a6fa5',
+                    strokeWidth: 8,
+                    delayBetweenStrokes: 500,
+                    showOutline: true,
+                    outlineColor: 'rgba(74, 111, 165, 0.2)'
+                });
+
+                // 播放完整动画
+                hanziWriterInstance.animateCharacter();
+            } catch (error) {
+                console.error('Error initializing Hanzi Writer:', error);
+            }
+        }
+
+        // 开始笔画临摹时高亮对应笔画
+        function highlightStroke(strokeIndex) {
+            if (hanziWriterInstance) {
+                hanziWriterInstance.highlightStroke(strokeIndex - 1);
+            }
+        }
+
+        // 初始化单个笔画显示
+        function initStrokeSymbols() {
+            const strokes = hanziStrokeData[currentHanzi] || [];
+            console.log('Initializing stroke symbols for', currentHanzi, 'with', strokes.length, 'strokes');
+
+            for (let i = 1; i <= strokes.length; i++) {
+                const strokeElement = document.getElementById(`stroke-${i}`);
+                console.log(`Checking stroke-${i}:`, strokeElement);
+
+                if (strokeElement && typeof HanziWriter !== 'undefined') {
+                    try {
+                        // 为每个笔画创建一个小型的Hanzi Writer实例
+                        const strokeWriter = HanziWriter.create(`stroke-${i}`, currentHanzi, {
+                            width: 60,
+                            height: 60,
+                            padding: 10,
+                            strokeColor: '#4a6fa5',
+                            strokeWidth: 4,
+                            showOutline: false,
+                            showCharacter: false
+                        });
+
+                        console.log(`Created stroke writer for stroke ${i}`);
+
+                        // 显示从第一笔到当前笔的所有笔画
+                        strokeWriter.animateCharacter({
+                            strokeAnimationSpeed: 0, // 立即显示
+                            onComplete: function () {
+                                // 动画完成后，显示从第一笔到当前笔的所有笔画
+                                strokeWriter.showUpToStroke(i - 1);
+                                console.log(`Showing up to stroke ${i}`);
+                            }
+                        });
+                    } catch (error) {
+                        console.error(`Error initializing stroke ${i}:`, error);
+                        // 出错时显示笔画名称作为后备
+                        strokeElement.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 1.5rem; color: #4a6fa5;">${strokes[i - 1]}</div>`;
+                    }
+                } else {
+                    console.error(`Stroke element ${i} not found or HanziWriter not loaded`);
+                }
+            }
+        }
 
         // 关闭详情
         function closeDetail() {
