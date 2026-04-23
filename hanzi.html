@@ -306,6 +306,11 @@
             border: 2px solid #ffd700;
         }
 
+        .stroke-item:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
         .stroke-item.active {
             border: 3px solid #4a6fa5;
             background-color: #e8f4fd;
@@ -336,11 +341,16 @@
             font-size: 0.7rem;
             cursor: pointer;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.2s ease;
         }
 
         .stroke-item:hover .trace-btn {
             opacity: 1;
+        }
+
+        .stroke-item .trace-btn:active {
+            transform: translateX(-50%) scale(0.95);
+            background-color: #ffc107;
         }
 
         /* 临摹区域 */
@@ -629,7 +639,39 @@
             }
 
             .hanzi-info h2 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+
+            /* 调整标题和文字大小 */
+            .hanzi-strokes h3 {
+                font-size: 1.3rem;
+            }
+
+            .tracing-section h3 {
+                font-size: 1.3rem;
+            }
+
+            .hanzi-words h3 {
+                font-size: 1.3rem;
+            }
+
+            /* 调整按钮文字大小 */
+            .tracing-btn {
+                font-size: 0.85rem;
+                padding: 10px 15px;
+            }
+
+            /* 调整词语列表项的字体大小 */
+            .word-item .word {
+                font-size: 1.3rem;
+            }
+
+            .word-item .pinyin {
+                font-size: 0.9rem;
+            }
+
+            .word-item .meaning {
+                font-size: 0.8rem;
             }
 
             /* 临摹练习区域响应式 */
@@ -670,6 +712,31 @@
             .stroke-tracing-container {
                 flex-direction: column;
                 align-items: center;
+            }
+
+            /* 笔顺展示区域响应式调整 */
+            .stroke-order {
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .stroke-item {
+                padding: 12px 15px;
+                min-width: 80px;
+                text-align: center;
+            }
+
+            .stroke-item span {
+                font-size: 1.5rem;
+            }
+
+            .stroke-item small {
+                font-size: 0.8rem;
+            }
+
+            .stroke-item .trace-btn {
+                font-size: 0.65rem;
+                padding: 4px 10px;
             }
         }
 
@@ -1072,12 +1139,18 @@
             if (!isDrawing) return;
             const touch = e.touches[0];
             const rect = e.target.getBoundingClientRect();
-            strokeCtx.beginPath();
-            strokeCtx.moveTo(lastX, lastY);
-            strokeCtx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
-            strokeCtx.stroke();
-            lastX = touch.clientX - rect.left;
-            lastY = touch.clientY - rect.top;
+            const currentX = touch.clientX - rect.left;
+            const currentY = touch.clientY - rect.top;
+
+            // 优化绘画性能，减少绘制频率
+            if (Math.abs(currentX - lastX) > 1 || Math.abs(currentY - lastY) > 1) {
+                strokeCtx.beginPath();
+                strokeCtx.moveTo(lastX, lastY);
+                strokeCtx.lineTo(currentX, currentY);
+                strokeCtx.stroke();
+                lastX = currentX;
+                lastY = currentY;
+            }
         }
 
         // 画布绘制函数 - 完整字
@@ -1110,12 +1183,18 @@
             if (!isDrawing) return;
             const touch = e.touches[0];
             const rect = e.target.getBoundingClientRect();
-            completeCtx.beginPath();
-            completeCtx.moveTo(lastX, lastY);
-            completeCtx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
-            completeCtx.stroke();
-            lastX = touch.clientX - rect.left;
-            lastY = touch.clientY - rect.top;
+            const currentX = touch.clientX - rect.left;
+            const currentY = touch.clientY - rect.top;
+
+            // 优化绘画性能，减少绘制频率
+            if (Math.abs(currentX - lastX) > 1 || Math.abs(currentY - lastY) > 1) {
+                completeCtx.beginPath();
+                completeCtx.moveTo(lastX, lastY);
+                completeCtx.lineTo(currentX, currentY);
+                completeCtx.stroke();
+                lastX = currentX;
+                lastY = currentY;
+            }
         }
 
         // 清除画布
