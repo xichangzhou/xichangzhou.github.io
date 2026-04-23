@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程序员导航 | jsonxcz 一家</title>
+    <meta name="description" content="程序员常用网站导航，包含开发工具、学习资源、技术社区等">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 导航栏 */
+        header {
+            background-color: rgba(74, 111, 165, 0.95);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        .nav-links a.active {
+            color: #ffd700;
+        }
+
+        /* 菜单按钮 */
+        .menu-toggle {
+            display: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, rgba(74, 111, 165, 0.9), rgba(100, 149, 237, 0.8)), url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=programmer%20working%20on%20computer%2C%20code%20on%20screen%2C%20modern%20office%2C%20blue%20lighting%2C%20realistic%20style&image_size=landscape_16_9');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            padding: 150px 0;
+            position: relative;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #ffd700;
+            color: #333;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            animation: fadeIn 1.4s ease-in-out;
+        }
+
+        .cta-button:hover {
+            background-color: #ffed4e;
+            transform: translateY(-3px);
+        }
+
+        /* 程序员导航部分 */
+        .developer-nav {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #4a6fa5;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #ffd700;
+            margin: 20px auto;
+        }
+
+        .nav-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .category {
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .category:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #4a6fa5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category h3 i {
+            font-size: 1.8rem;
+        }
+
+        .site-list {
+            list-style: none;
+        }
+
+        .site-list li {
+            margin-bottom: 15px;
+        }
+
+        .site-list a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+        }
+
+        .site-list a:hover {
+            color: #4a6fa5;
+            transform: translateX(5px);
+        }
+
+        .site-list a i {
+            font-size: 1.2rem;
+            color: #4a6fa5;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: rgba(74, 111, 165, 0.98);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                z-index: 999;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                cursor: pointer;
+                font-size: 28px;
+                padding: 10px 20px;
+                background: none;
+                border: none;
+                color: white;
+                z-index: 1001;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 滚动动画 */
+        .category {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">jsonxcz 一家</a>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">首页</a></li>
+                    <li><a href="index.html#about">关于我们</a></li>
+                    <li><a href="index.html#family">家庭成员</a></li>
+                    <li><a href="index.html#life">生活点滴</a></li>
+                    <li><a href="index.html#memories">美好回忆</a></li>
+                    <li><a href="index.html#pdf">PDF文件</a></li>
+                    <li><a href="developer.html" class="active">程序员</a></li>
+                    <li><a href="index.html#contact">联系我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>程序员导航</h1>
+                <p>精心收集的程序员常用网站，助力开发效率提升</p>
+                <a href="#developer-nav" class="cta-button">开始探索</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="developer-nav" class="developer-nav">
+        <div class="container">
+            <h2 class="section-title">程序员常用网站</h2>
+            
+            <div class="nav-categories">
+                <!-- 开发工具 -->
+                <div class="category">
+                    <h3><i class="fas fa-tools"></i> 开发工具</h3>
+                    <ul class="site-list">
+                        <li><a href="https://code.visualstudio.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Visual Studio Code</a></li>
+                        <li><a href="https://github.com/" target="_blank"><i class="fas fa-external-link-alt"></i> GitHub</a></li>
+                        <li><a href="https://git-scm.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Git</a></li>
+                        <li><a href="https://www.docker.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Docker</a></li>
+                        <li><a href="https://www.postman.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Postman</a></li>
+                    </ul>
+                </div>
+
+                <!-- 学习资源 -->
+                <div class="category">
+                    <h3><i class="fas fa-book"></i> 学习资源</h3>
+                    <ul class="site-list">
+                        <li><a href="https://developer.mozilla.org/" target="_blank"><i class="fas fa-external-link-alt"></i> MDN Web Docs</a></li>
+                        <li><a href="https://stackoverflow.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Stack Overflow</a></li>
+                        <li><a href="https://www.w3schools.com/" target="_blank"><i class="fas fa-external-link-alt"></i> W3Schools</a></li>
+                        <li><a href="https://learn.microsoft.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Microsoft Learn</a></li>
+                        <li><a href="https://www.freecodecamp.org/" target="_blank"><i class="fas fa-external-link-alt"></i> freeCodeCamp</a></li>
+                    </ul>
+                </div>
+
+                <!-- 技术社区 -->
+                <div class="category">
+                    <h3><i class="fas fa-comments"></i> 技术社区</h3>
+                    <ul class="site-list">
+                        <li><a href="https://github.com/" target="_blank"><i class="fas fa-external-link-alt"></i> GitHub Community</a></li>
+                        <li><a href="https://stackoverflow.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Stack Overflow</a></li>
+                        <li><a href="https://dev.to/" target="_blank"><i class="fas fa-external-link-alt"></i> DEV Community</a></li>
+                        <li><a href="https://medium.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Medium</a></li>
+                        <li><a href="https://reddit.com/r/programming/" target="_blank"><i class="fas fa-external-link-alt"></i> Reddit Programming</a></li>
+                    </ul>
+                </div>
+
+                <!-- 前端开发 -->
+                <div class="category">
+                    <h3><i class="fas fa-code"></i> 前端开发</h3>
+                    <ul class="site-list">
+                        <li><a href="https://reactjs.org/" target="_blank"><i class="fas fa-external-link-alt"></i> React</a></li>
+                        <li><a href="https://vuejs.org/" target="_blank"><i class="fas fa-external-link-alt"></i> Vue.js</a></li>
+                        <li><a href="https://angular.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Angular</a></li>
+                        <li><a href="https://sass-lang.com/" target="_blank"><i class="fas fa-external-link-alt"></i> SASS</a></li>
+                        <li><a href="https://webpack.js.org/" target="_blank"><i class="fas fa-external-link-alt"></i> Webpack</a></li>
+                    </ul>
+                </div>
+
+                <!-- 后端开发 -->
+                <div class="category">
+                    <h3><i class="fas fa-server"></i> 后端开发</h3>
+                    <ul class="site-list">
+                        <li><a href="https://nodejs.org/" target="_blank"><i class="fas fa-external-link-alt"></i> Node.js</a></li>
+                        <li><a href="https://expressjs.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Express</a></li>
+                        <li><a href="https://django.readthedocs.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Django</a></li>
+                        <li><a href="https://flask.palletsprojects.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Flask</a></li>
+                        <li><a href="https://spring.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Spring</a></li>
+                    </ul>
+                </div>
+
+                <!-- 数据库 -->
+                <div class="category">
+                    <h3><i class="fas fa-database"></i> 数据库</h3>
+                    <ul class="site-list">
+                        <li><a href="https://www.mysql.com/" target="_blank"><i class="fas fa-external-link-alt"></i> MySQL</a></li>
+                        <li><a href="https://www.postgresql.org/" target="_blank"><i class="fas fa-external-link-alt"></i> PostgreSQL</a></li>
+                        <li><a href="https://www.mongodb.com/" target="_blank"><i class="fas fa-external-link-alt"></i> MongoDB</a></li>
+                        <li><a href="https://redis.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Redis</a></li>
+                        <li><a href="https://www.sqlite.org/" target="_blank"><i class="fas fa-external-link-alt"></i> SQLite</a></li>
+                    </ul>
+                </div>
+
+                <!-- API工具 -->
+                <div class="category">
+                    <h3><i class="fas fa-exchange-alt"></i> API工具</h3>
+                    <ul class="site-list">
+                        <li><a href="https://www.postman.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Postman</a></li>
+                        <li><a href="https://insomnia.rest/" target="_blank"><i class="fas fa-external-link-alt"></i> Insomnia</a></li>
+                        <li><a href="https://swagger.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Swagger</a></li>
+                        <li><a href="https://www.graphql.org/" target="_blank"><i class="fas fa-external-link-alt"></i> GraphQL</a></li>
+                        <li><a href="https://apipheny.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Apipheny</a></li>
+                    </ul>
+                </div>
+
+                <!-- 云服务 -->
+                <div class="category">
+                    <h3><i class="fas fa-cloud"></i> 云服务</h3>
+                    <ul class="site-list">
+                        <li><a href="https://aws.amazon.com/" target="_blank"><i class="fas fa-external-link-alt"></i> AWS</a></li>
+                        <li><a href="https://azure.microsoft.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Microsoft Azure</a></li>
+                        <li><a href="https://cloud.google.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Google Cloud</a></li>
+                        <li><a href="https://www.heroku.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Heroku</a></li>
+                        <li><a href="https://vercel.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Vercel</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 jsonxcz 一家 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.backgroundColor = 'rgba(74, 111, 165, 0.98)';
+                header.style.padding = '15px 0';
+            } else {
+                header.style.backgroundColor = 'rgba(74, 111, 165, 0.95)';
+                header.style.padding = '20px 0';
+            }
+        });
+
+        // 移动端菜单
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', function () {
+            navLinks.classList.toggle('active');
+        });
+
+        // 点击菜单项后关闭菜单
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function () {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // 滚动动画
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.category');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (elementTop < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // 监听滚动事件
+        window.addEventListener('scroll', handleScrollAnimation);
+
+        // 初始调用
+        handleScrollAnimation();
+    </script>
+</body>
+</html>
