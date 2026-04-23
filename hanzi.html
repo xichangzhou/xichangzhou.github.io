@@ -428,6 +428,7 @@
             gap: 10px;
             justify-content: center;
             margin-top: 15px;
+            flex-wrap: wrap;
         }
 
         .tracing-btn {
@@ -442,6 +443,9 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            flex: 1;
+            min-width: 120px;
+            justify-content: center;
         }
 
         .tracing-btn:hover {
@@ -626,6 +630,46 @@
 
             .hanzi-info h2 {
                 font-size: 2rem;
+            }
+
+            /* 临摹练习区域响应式 */
+            .tracing-canvas-container {
+                width: 180px;
+                height: 180px;
+                margin: 0 auto 20px;
+            }
+
+            .tracing-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tracing-tab {
+                width: 100%;
+                max-width: 200px;
+                text-align: center;
+            }
+
+            .tracing-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tracing-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+
+            /* 完整字临摹容器垂直布局 */
+            .complete-tracing-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            /* 笔画临摹容器垂直布局 */
+            .stroke-tracing-container {
+                flex-direction: column;
+                align-items: center;
             }
         }
 
