@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,6 +34,7 @@
             background-color: rgba(74, 111, 165, 0.95);
             color: white;
             padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: fixed;
             width: 100%;
             z-index: 1000;
@@ -43,18 +45,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
 
         .logo {
-            font-size: 1.5rem;
+            padding: 0 0 0 20px;
+            font-size: 24px;
             font-weight: bold;
-            text-decoration: none;
             color: white;
+            text-decoration: none;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
+            padding: 0 20px 0 0;
         }
 
         .nav-links li {
@@ -64,16 +69,29 @@
         .nav-links a {
             color: white;
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            transition: color 0.3s;
+            position: relative;
         }
 
-        .nav-links a:hover {
-            color: #ffd700;
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ffd700;
+            transition: width 0.3s ease;
         }
 
+        .nav-links a:hover,
         .nav-links a.active {
             color: #ffd700;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
         }
 
         /* 菜单按钮 */
@@ -274,6 +292,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -288,6 +307,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="container">
@@ -323,17 +343,22 @@
     <section id="developer-nav" class="developer-nav">
         <div class="container">
             <h2 class="section-title">程序员常用网站</h2>
-            
+
             <div class="nav-categories">
                 <!-- 开发工具 -->
                 <div class="category">
                     <h3><i class="fas fa-tools"></i> 开发工具</h3>
                     <ul class="site-list">
-                        <li><a href="https://code.visualstudio.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Visual Studio Code</a></li>
-                        <li><a href="https://github.com/" target="_blank"><i class="fas fa-external-link-alt"></i> GitHub</a></li>
-                        <li><a href="https://git-scm.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Git</a></li>
-                        <li><a href="https://www.docker.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Docker</a></li>
-                        <li><a href="https://www.postman.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Postman</a></li>
+                        <li><a href="https://code.visualstudio.com/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> Visual Studio Code</a></li>
+                        <li><a href="https://github.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                GitHub</a></li>
+                        <li><a href="https://git-scm.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Git</a></li>
+                        <li><a href="https://www.docker.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Docker</a></li>
+                        <li><a href="https://www.postman.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Postman</a></li>
                     </ul>
                 </div>
 
@@ -341,11 +366,16 @@
                 <div class="category">
                     <h3><i class="fas fa-book"></i> 学习资源</h3>
                     <ul class="site-list">
-                        <li><a href="https://developer.mozilla.org/" target="_blank"><i class="fas fa-external-link-alt"></i> MDN Web Docs</a></li>
-                        <li><a href="https://stackoverflow.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Stack Overflow</a></li>
-                        <li><a href="https://www.w3schools.com/" target="_blank"><i class="fas fa-external-link-alt"></i> W3Schools</a></li>
-                        <li><a href="https://learn.microsoft.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Microsoft Learn</a></li>
-                        <li><a href="https://www.freecodecamp.org/" target="_blank"><i class="fas fa-external-link-alt"></i> freeCodeCamp</a></li>
+                        <li><a href="https://developer.mozilla.org/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> MDN Web Docs</a></li>
+                        <li><a href="https://stackoverflow.com/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> Stack Overflow</a></li>
+                        <li><a href="https://www.w3schools.com/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> W3Schools</a></li>
+                        <li><a href="https://learn.microsoft.com/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> Microsoft Learn</a></li>
+                        <li><a href="https://www.freecodecamp.org/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> freeCodeCamp</a></li>
                     </ul>
                 </div>
 
@@ -353,11 +383,16 @@
                 <div class="category">
                     <h3><i class="fas fa-comments"></i> 技术社区</h3>
                     <ul class="site-list">
-                        <li><a href="https://github.com/" target="_blank"><i class="fas fa-external-link-alt"></i> GitHub Community</a></li>
-                        <li><a href="https://stackoverflow.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Stack Overflow</a></li>
-                        <li><a href="https://dev.to/" target="_blank"><i class="fas fa-external-link-alt"></i> DEV Community</a></li>
-                        <li><a href="https://medium.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Medium</a></li>
-                        <li><a href="https://reddit.com/r/programming/" target="_blank"><i class="fas fa-external-link-alt"></i> Reddit Programming</a></li>
+                        <li><a href="https://github.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                GitHub Community</a></li>
+                        <li><a href="https://stackoverflow.com/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> Stack Overflow</a></li>
+                        <li><a href="https://dev.to/" target="_blank"><i class="fas fa-external-link-alt"></i> DEV
+                                Community</a></li>
+                        <li><a href="https://medium.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Medium</a></li>
+                        <li><a href="https://reddit.com/r/programming/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> Reddit Programming</a></li>
                     </ul>
                 </div>
 
@@ -365,11 +400,16 @@
                 <div class="category">
                     <h3><i class="fas fa-code"></i> 前端开发</h3>
                     <ul class="site-list">
-                        <li><a href="https://reactjs.org/" target="_blank"><i class="fas fa-external-link-alt"></i> React</a></li>
-                        <li><a href="https://vuejs.org/" target="_blank"><i class="fas fa-external-link-alt"></i> Vue.js</a></li>
-                        <li><a href="https://angular.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Angular</a></li>
-                        <li><a href="https://sass-lang.com/" target="_blank"><i class="fas fa-external-link-alt"></i> SASS</a></li>
-                        <li><a href="https://webpack.js.org/" target="_blank"><i class="fas fa-external-link-alt"></i> Webpack</a></li>
+                        <li><a href="https://reactjs.org/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                React</a></li>
+                        <li><a href="https://vuejs.org/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Vue.js</a></li>
+                        <li><a href="https://angular.io/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Angular</a></li>
+                        <li><a href="https://sass-lang.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                SASS</a></li>
+                        <li><a href="https://webpack.js.org/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Webpack</a></li>
                     </ul>
                 </div>
 
@@ -377,11 +417,16 @@
                 <div class="category">
                     <h3><i class="fas fa-server"></i> 后端开发</h3>
                     <ul class="site-list">
-                        <li><a href="https://nodejs.org/" target="_blank"><i class="fas fa-external-link-alt"></i> Node.js</a></li>
-                        <li><a href="https://expressjs.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Express</a></li>
-                        <li><a href="https://django.readthedocs.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Django</a></li>
-                        <li><a href="https://flask.palletsprojects.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Flask</a></li>
-                        <li><a href="https://spring.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Spring</a></li>
+                        <li><a href="https://nodejs.org/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Node.js</a></li>
+                        <li><a href="https://expressjs.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Express</a></li>
+                        <li><a href="https://django.readthedocs.io/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> Django</a></li>
+                        <li><a href="https://flask.palletsprojects.com/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> Flask</a></li>
+                        <li><a href="https://spring.io/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Spring</a></li>
                     </ul>
                 </div>
 
@@ -389,11 +434,16 @@
                 <div class="category">
                     <h3><i class="fas fa-database"></i> 数据库</h3>
                     <ul class="site-list">
-                        <li><a href="https://www.mysql.com/" target="_blank"><i class="fas fa-external-link-alt"></i> MySQL</a></li>
-                        <li><a href="https://www.postgresql.org/" target="_blank"><i class="fas fa-external-link-alt"></i> PostgreSQL</a></li>
-                        <li><a href="https://www.mongodb.com/" target="_blank"><i class="fas fa-external-link-alt"></i> MongoDB</a></li>
-                        <li><a href="https://redis.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Redis</a></li>
-                        <li><a href="https://www.sqlite.org/" target="_blank"><i class="fas fa-external-link-alt"></i> SQLite</a></li>
+                        <li><a href="https://www.mysql.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                MySQL</a></li>
+                        <li><a href="https://www.postgresql.org/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> PostgreSQL</a></li>
+                        <li><a href="https://www.mongodb.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                MongoDB</a></li>
+                        <li><a href="https://redis.io/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Redis</a></li>
+                        <li><a href="https://www.sqlite.org/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                SQLite</a></li>
                     </ul>
                 </div>
 
@@ -401,11 +451,16 @@
                 <div class="category">
                     <h3><i class="fas fa-exchange-alt"></i> API工具</h3>
                     <ul class="site-list">
-                        <li><a href="https://www.postman.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Postman</a></li>
-                        <li><a href="https://insomnia.rest/" target="_blank"><i class="fas fa-external-link-alt"></i> Insomnia</a></li>
-                        <li><a href="https://swagger.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Swagger</a></li>
-                        <li><a href="https://www.graphql.org/" target="_blank"><i class="fas fa-external-link-alt"></i> GraphQL</a></li>
-                        <li><a href="https://apipheny.io/" target="_blank"><i class="fas fa-external-link-alt"></i> Apipheny</a></li>
+                        <li><a href="https://www.postman.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Postman</a></li>
+                        <li><a href="https://insomnia.rest/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Insomnia</a></li>
+                        <li><a href="https://swagger.io/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Swagger</a></li>
+                        <li><a href="https://www.graphql.org/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                GraphQL</a></li>
+                        <li><a href="https://apipheny.io/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Apipheny</a></li>
                     </ul>
                 </div>
 
@@ -413,11 +468,16 @@
                 <div class="category">
                     <h3><i class="fas fa-cloud"></i> 云服务</h3>
                     <ul class="site-list">
-                        <li><a href="https://aws.amazon.com/" target="_blank"><i class="fas fa-external-link-alt"></i> AWS</a></li>
-                        <li><a href="https://azure.microsoft.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Microsoft Azure</a></li>
-                        <li><a href="https://cloud.google.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Google Cloud</a></li>
-                        <li><a href="https://www.heroku.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Heroku</a></li>
-                        <li><a href="https://vercel.com/" target="_blank"><i class="fas fa-external-link-alt"></i> Vercel</a></li>
+                        <li><a href="https://aws.amazon.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                AWS</a></li>
+                        <li><a href="https://azure.microsoft.com/" target="_blank"><i
+                                    class="fas fa-external-link-alt"></i> Microsoft Azure</a></li>
+                        <li><a href="https://cloud.google.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Google Cloud</a></li>
+                        <li><a href="https://www.heroku.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Heroku</a></li>
+                        <li><a href="https://vercel.com/" target="_blank"><i class="fas fa-external-link-alt"></i>
+                                Vercel</a></li>
                     </ul>
                 </div>
             </div>
@@ -488,4 +548,5 @@
         handleScrollAnimation();
     </script>
 </body>
+
 </html>
