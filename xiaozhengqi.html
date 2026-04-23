@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小正启 | 幼儿学习</title>
+    <meta name="description" content="小正启 - 为幼儿提供汉字、拼音、英语和数学学习功能">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 导航栏 */
+        header {
+            background-color: rgba(74, 111, 165, 0.95);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            padding: 0 0 0 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            padding: 0 20px 0 0;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ffd700;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ffd700;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* 菜单按钮 */
+        .menu-toggle {
+            display: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.9), rgba(255, 215, 0, 0.8)), url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=colorful%20children%20learning%20playground%2C%20bright%20colors%2C%20educational%20toys%2C%20happy%20kids%2C%20cartoon%20style&image_size=landscape_16_9');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+            text-align: center;
+            padding: 150px 0;
+            position: relative;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #4a6fa5;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            animation: fadeIn 1.4s ease-in-out;
+        }
+
+        .cta-button:hover {
+            background-color: #3a5a85;
+            transform: translateY(-3px);
+        }
+
+        /* 学习部分 */
+        .learning-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #4a6fa5;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #ffd700;
+            margin: 20px auto;
+        }
+
+        .learning-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .learning-card {
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .learning-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-color: #ffd700;
+        }
+
+        .learning-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4a6fa5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .learning-card h3 i {
+            font-size: 2.2rem;
+        }
+
+        .learning-card p {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .learning-button {
+            display: inline-block;
+            background-color: #4a6fa5;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .learning-button:hover {
+            background-color: #3a5a85;
+            transform: translateY(-3px);
+        }
+
+        /* 汉字学习部分 */
+        .chinese-section {
+            padding: 80px 0;
+            background-color: #f5f5f5;
+        }
+
+        .chinese-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .chinese-text {
+            flex: 1 1 300px;
+        }
+
+        .chinese-image {
+            flex: 1 1 300px;
+        }
+
+        .chinese-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 拼音学习部分 */
+        .pinyin-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        /* 英语学习部分 */
+        .english-section {
+            padding: 80px 0;
+            background-color: #f5f5f5;
+        }
+
+        /* 数学学习部分 */
+        .math-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        /* 学习特点 */
+        .features-section {
+            padding: 80px 0;
+            background-color: #f5f5f5;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 30px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-item i {
+            font-size: 2.5rem;
+            color: #4a6fa5;
+            margin-bottom: 20px;
+        }
+
+        .feature-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #4a6fa5;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: rgba(74, 111, 165, 0.98);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                z-index: 999;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                cursor: pointer;
+                font-size: 28px;
+                padding: 10px 20px;
+                background: none;
+                border: none;
+                color: white;
+                z-index: 1001;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 滚动动画 */
+        .learning-card, .chinese-content, .feature-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">jsonxcz 一家</a>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">首页</a></li>
+                    <li><a href="index.html#about">关于我们</a></li>
+                    <li><a href="index.html#family">家庭成员</a></li>
+                    <li><a href="index.html#life">生活点滴</a></li>
+                    <li><a href="index.html#memories">美好回忆</a></li>
+                    <li><a href="index.html#pdf">PDF文件</a></li>
+                    <li><a href="developer.html">程序员</a></li>
+                    <li><a href="xiaozhengqi.html" class="active">小正启</a></li>
+                    <li><a href="index.html#contact">联系我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>小正启</h1>
+                <p>为幼儿提供汉字、拼音、英语和数学学习功能</p>
+                <a href="#learning" class="cta-button">开始学习</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="learning" class="learning-section">
+        <div class="container">
+            <h2 class="section-title">学习内容</h2>
+            
+            <div class="learning-categories">
+                <!-- 汉字学习 -->
+                <div class="learning-card">
+                    <h3><i class="fas fa-language"></i> 汉字学习</h3>
+                    <p>通过有趣的方式学习汉字，包括笔顺、发音和常用词语</p>
+                    <a href="#chinese" class="learning-button">开始学习</a>
+                </div>
+
+                <!-- 拼音学习 -->
+                <div class="learning-card">
+                    <h3><i class="fas fa-microphone"></i> 拼音学习</h3>
+                    <p>学习汉语拼音，掌握正确的发音和声调</p>
+                    <a href="#pinyin" class="learning-button">开始学习</a>
+                </div>
+
+                <!-- 英语学习 -->
+                <div class="learning-card">
+                    <h3><i class="fas fa-globe"></i> 英语学习</h3>
+                    <p>学习基础英语单词和简单句子，培养英语兴趣</p>
+                    <a href="#english" class="learning-button">开始学习</a>
+                </div>
+
+                <!-- 数学学习 -->
+                <div class="learning-card">
+                    <h3><i class="fas fa-calculator"></i> 数学学习</h3>
+                    <p>学习基础数学概念和简单计算，培养数学思维</p>
+                    <a href="#math" class="learning-button">开始学习</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="chinese" class="chinese-section">
+        <div class="container">
+            <h2 class="section-title">汉字学习</h2>
+            <div class="chinese-content">
+                <div class="chinese-text">
+                    <h3>有趣的汉字学习</h3>
+                    <p>通过动画和游戏的方式学习汉字，让孩子在轻松愉快的氛围中掌握汉字的书写和含义。我们提供了常用汉字的学习内容，包括笔顺演示、发音练习和词语搭配。</p>
+                    <p>每个汉字都配有生动的插图和例句，帮助孩子理解汉字的含义和用法。通过互动练习，孩子可以巩固所学知识，提高汉字识别和书写能力。</p>
+                    <a href="#" class="learning-button">开始学习</a>
+                </div>
+                <div class="chinese-image">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20chinese%20characters%2C%20colorful%20educational%20interface%2C%20cartoon%20style&image_size=landscape_16_9" alt="汉字学习">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pinyin" class="pinyin-section">
+        <div class="container">
+            <h2 class="section-title">拼音学习</h2>
+            <div class="chinese-content">
+                <div class="chinese-image">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20chinese%20pinyin%2C%20colorful%20phonetics%20interface%2C%20cartoon%20style&image_size=landscape_16_9" alt="拼音学习">
+                </div>
+                <div class="chinese-text">
+                    <h3>标准的拼音发音</h3>
+                    <p>学习汉语拼音的声母、韵母和声调，通过动画和音频帮助孩子掌握正确的发音。我们提供了丰富的练习内容，包括听音辨字、拼音组合等。</p>
+                    <p>通过互动游戏和练习，孩子可以巩固所学的拼音知识，提高拼音的应用能力。我们的拼音学习内容适合不同年龄段的孩子，从基础到进阶。</p>
+                    <a href="#" class="learning-button">开始学习</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="english" class="english-section">
+        <div class="container">
+            <h2 class="section-title">英语学习</h2>
+            <div class="chinese-content">
+                <div class="chinese-text">
+                    <h3>基础英语学习</h3>
+                    <p>通过有趣的方式学习基础英语单词和简单句子，培养孩子的英语兴趣和语感。我们提供了日常生活中常用的英语词汇和简单对话。</p>
+                    <p>每个英语单词都配有生动的插图和标准的发音，帮助孩子理解单词的含义和正确发音。通过互动练习，孩子可以巩固所学的英语知识。</p>
+                    <a href="#" class="learning-button">开始学习</a>
+                </div>
+                <div class="chinese-image">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20english%2C%20colorful%20educational%20interface%2C%20cartoon%20style&image_size=landscape_16_9" alt="英语学习">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="math" class="math-section">
+        <div class="container">
+            <h2 class="section-title">数学学习</h2>
+            <div class="chinese-content">
+                <div class="chinese-image">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20learning%20math%2C%20colorful%20numbers%20and%20shapes%2C%20cartoon%20style&image_size=landscape_16_9" alt="数学学习">
+                </div>
+                <div class="chinese-text">
+                    <h3>趣味数学学习</h3>
+                    <p>通过游戏和互动的方式学习基础数学概念，包括数字认识、加减法、形状和空间等。我们的数学学习内容设计有趣，符合幼儿的认知特点。</p>
+                    <p>通过各种数学游戏和练习，孩子可以培养数学思维和解决问题的能力。我们的数学学习内容适合不同年龄段的孩子，从基础到进阶。</p>
+                    <a href="#" class="learning-button">开始学习</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">学习特点</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-gamepad"></i>
+                    <h3>游戏化学习</h3>
+                    <p>通过游戏的方式学习，让孩子在愉快的氛围中掌握知识</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-child"></i>
+                    <h3>适合幼儿</h3>
+                    <p>内容设计符合幼儿的认知特点，简单易懂</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-book"></i>
+                    <h3>丰富内容</h3>
+                    <p>提供丰富的学习内容，涵盖汉字、拼音、英语和数学</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>互动练习</h3>
+                    <p>通过互动练习巩固所学知识，提高学习效果</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 小正启 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.backgroundColor = 'rgba(74, 111, 165, 0.98)';
+                header.style.padding = '15px 0';
+            } else {
+                header.style.backgroundColor = 'rgba(74, 111, 165, 0.95)';
+                header.style.padding = '20px 0';
+            }
+        });
+
+        // 移动端菜单
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', function () {
+            navLinks.classList.toggle('active');
+        });
+
+        // 点击菜单项后关闭菜单
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function () {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // 滚动动画
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.learning-card, .chinese-content, .feature-item');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (elementTop < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // 监听滚动事件
+        window.addEventListener('scroll', handleScrollAnimation);
+
+        // 初始调用
+        handleScrollAnimation();
+    </script>
+</body>
+</html>
