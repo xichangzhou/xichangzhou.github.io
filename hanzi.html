@@ -408,11 +408,22 @@
             border-radius: 10px;
             background-color: #fff;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .tracing-canvas-container canvas {
             width: 100%;
             height: 100%;
+        }
+
+        .tracing-canvas-container>div {
+            width: 100% !important;
+            height: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
 
         .tracing-guide {
@@ -673,6 +684,17 @@
                 width: 180px;
                 height: 180px;
                 margin: 0 auto 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .tracing-canvas-container>div {
+                width: 100% !important;
+                height: 100% !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
             }
 
             .tracing-tabs {
@@ -941,7 +963,7 @@
                     <div class="tracing-container" id="quizContainer">
                         <p style="margin-bottom: 15px; color: #666;">笔顺测验练习</p>
                         <div class="tracing-canvas-container">
-                            <div id="quizCanvas" style="width: 200px; height: 200px; margin: 0 auto;"></div>
+                            <div id="quizCanvas"></div>
                         </div>
                         <div class="tracing-controls">
                             <button class="tracing-btn" onclick="resetQuiz()">
@@ -1151,9 +1173,14 @@
                         animationContainer.innerHTML = '';
                     }
 
+                    // 获取容器尺寸
+                    const container = document.querySelector('.tracing-canvas-container');
+                    const width = container.offsetWidth;
+                    const height = container.offsetHeight;
+
                     animationWriter = HanziWriter.create('animationCanvas', currentHanzi, {
-                        width: 200,
-                        height: 200,
+                        width: width,
+                        height: height,
                         padding: 20,
                         strokeAnimationSpeed: 1,
                         radicalColor: '#4a6fa5',
@@ -1275,9 +1302,14 @@
                         quizContainer.innerHTML = '';
                     }
 
+                    // 获取容器尺寸
+                    const container = document.querySelector('.tracing-canvas-container');
+                    const width = container.offsetWidth;
+                    const height = container.offsetHeight;
+
                     quizWriter = HanziWriter.create('quizCanvas', currentHanzi, {
-                        width: 200,
-                        height: 200,
+                        width: width,
+                        height: height,
                         padding: 20,
                         strokeColor: '#4a6fa5',
                         strokeWidth: 8,
