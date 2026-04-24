@@ -1357,19 +1357,25 @@
 
                     // 开始笔顺测验
                     quizInstance = quizWriter.quiz({
-                        onComplete: function (result) {
-                            if (result.correct) {
+                        onComplete: function (correct) {
+                            console.log('Quiz result:', correct);
+                            if (correct) {
                                 alert('恭喜！笔顺正确！');
                             } else {
                                 alert('笔顺错误，请再试一次！');
                             }
                         },
                         onError: function (strokeIndex, strokeData) {
-                            console.log('错误的笔画:', strokeIndex + 1);
+                            console.log('错误的笔画:', strokeIndex + 1, strokeData);
                         },
                         onStart: function () {
                             console.log('测验开始');
-                        }
+                        },
+                        // 降低准确度要求，使测验更宽松
+                        showOutline: true,
+                        outlineColor: 'rgba(74, 111, 165, 0.2)',
+                        // 增加容错率
+                        tolerance: 0.5
                     });
                 } catch (error) {
                     console.error('Error starting quiz:', error);
