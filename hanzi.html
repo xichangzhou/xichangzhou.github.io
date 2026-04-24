@@ -481,21 +481,13 @@
             background-color: #229954;
         }
 
-        .stroke-tracing-container {
+        .tracing-container {
             display: none;
             flex-direction: column;
             align-items: center;
         }
 
-        .stroke-tracing-container.active {
-            display: flex;
-        }
-
-        .complete-tracing-container {
-            display: none;
-        }
-
-        .complete-tracing-container.active {
+        .tracing-container.active {
             display: flex;
         }
 
@@ -909,40 +901,60 @@
                 </div>
 
                 <div class="tracing-section">
-                    <h3><i class="fas fa-pen"></i> 临摹练习</h3>
+                    <h3><i class="fas fa-pen"></i> 汉字练习</h3>
                     <div class="tracing-tabs">
-                        <button class="tracing-tab active" onclick="switchTracingTab('stroke')">笔画临摹</button>
-                        <button class="tracing-tab" onclick="switchTracingTab('complete')">完整字临摹</button>
+                        <button class="tracing-tab active" onclick="switchTracingTab('animation')">笔顺动画</button>
+                        <button class="tracing-tab" onclick="switchTracingTab('tracing')">交互式描红</button>
+                        <button class="tracing-tab" onclick="switchTracingTab('quiz')">笔顺测验</button>
                     </div>
 
-                    <div class="stroke-tracing-container active" id="strokeTraceContainer">
-                        <p style="margin-bottom: 15px; color: #666;">当前练习第 <span id="currentStrokeNum">1</span> 笔</p>
+                    <!-- 笔顺动画容器 -->
+                    <div class="tracing-container active" id="animationContainer">
+                        <p style="margin-bottom: 15px; color: #666;">标准笔顺动画展示</p>
                         <div class="tracing-canvas-container">
-                            <div class="tracing-guide stroke-guide" id="strokeTraceGuide">人</div>
-                            <canvas id="strokeCanvas" width="200" height="200"></canvas>
+                            <div id="animationCanvas" style="width: 200px; height: 200px; margin: 0 auto;"></div>
                         </div>
                         <div class="tracing-controls">
-                            <button class="tracing-btn show-guide" onclick="toggleStrokeGuide()">
-                                <i class="fas fa-eye"></i> 显示提示
+                            <button class="tracing-btn" onclick="playAnimation()">
+                                <i class="fas fa-play"></i> 播放动画
                             </button>
-                            <button class="tracing-btn clear" onclick="clearStrokeCanvas()">
-                                <i class="fas fa-eraser"></i> 清除
+                            <button class="tracing-btn" onclick="resetAnimation()">
+                                <i class="fas fa-redo"></i> 重置
                             </button>
                         </div>
                     </div>
 
-                    <div class="complete-tracing-container" id="completeTraceContainer">
-                        <p style="margin-bottom: 15px; color: #666;">请临摹下面的汉字</p>
+                    <!-- 交互式描红容器 -->
+                    <div class="tracing-container" id="tracingContainer">
+                        <p style="margin-bottom: 15px; color: #666;">交互式描红练习</p>
                         <div class="tracing-canvas-container">
-                            <div class="tracing-guide" id="completeTraceGuide">人</div>
-                            <canvas id="completeCanvas" width="200" height="200"></canvas>
+                            <canvas id="tracingCanvas" width="200" height="200"></canvas>
+                            <div id="tracingGuide"
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 100px; font-weight: normal; color: rgba(74, 111, 165, 0.3); pointer-events: none; line-height: 1; padding: 10px;">
+                            </div>
                         </div>
                         <div class="tracing-controls">
-                            <button class="tracing-btn show-guide" onclick="toggleCompleteGuide()">
-                                <i class="fas fa-eye"></i> 显示提示
+                            <button class="tracing-btn" onclick="startTracing()">
+                                <i class="fas fa-pencil-alt"></i> 开始描红
                             </button>
-                            <button class="tracing-btn clear" onclick="clearCompleteCanvas()">
-                                <i class="fas fa-eraser"></i> 清除
+                            <button class="tracing-btn" onclick="resetTracing()">
+                                <i class="fas fa-redo"></i> 重置
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 笔顺测验容器 -->
+                    <div class="tracing-container" id="quizContainer">
+                        <p style="margin-bottom: 15px; color: #666;">笔顺测验练习</p>
+                        <div class="tracing-canvas-container">
+                            <div id="quizCanvas" style="width: 200px; height: 200px; margin: 0 auto;"></div>
+                        </div>
+                        <div class="tracing-controls">
+                            <button class="tracing-btn" onclick="startQuiz()">
+                                <i class="fas fa-question-circle"></i> 开始测验
+                            </button>
+                            <button class="tracing-btn" onclick="resetQuiz()">
+                                <i class="fas fa-redo"></i> 重置
                             </button>
                         </div>
                     </div>
@@ -1091,27 +1103,293 @@
             document.querySelector('.tracing-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // 切换临摹标签
+        // 全局变量存储各个Hanzi Writer实例
+        let animationWriter = null;
+        let tracingWriter = null;
+        let quizWriter = null;
+
+        // 切换练习标签
         function switchTracingTab(tab) {
             const tabs = document.querySelectorAll('.tracing-tab');
-            const strokeContainer = document.getElementById('strokeTraceContainer');
-            const completeContainer = document.getElementById('completeTraceContainer');
+            const animationContainer = document.getElementById('animationContainer');
+            const tracingContainer = document.getElementById('tracingContainer');
+            const quizContainer = document.getElementById('quizContainer');
 
+            // 隐藏所有容器
+            animationContainer.classList.remove('active');
+            tracingContainer.classList.remove('active');
+            quizContainer.classList.remove('active');
+
+            // 移除所有标签的激活状态
             tabs.forEach(t => t.classList.remove('active'));
 
-            if (tab === 'stroke') {
+            // 显示选中的容器
+            if (tab === 'animation') {
                 tabs[0].classList.add('active');
-                strokeContainer.classList.add('active');
-                completeContainer.classList.remove('active');
-            } else {
+                animationContainer.classList.add('active');
+                initAnimationWriter();
+            } else if (tab === 'tracing') {
                 tabs[1].classList.add('active');
-                strokeContainer.classList.remove('active');
-                completeContainer.classList.add('active');
+                tracingContainer.classList.add('active');
+                initTracingWriter();
+            } else if (tab === 'quiz') {
+                tabs[2].classList.add('active');
+                quizContainer.classList.add('active');
+                initQuizWriter();
+            }
+        }
 
-                // 更新完整字临摹提示
-                const completeTraceGuide = document.getElementById('completeTraceGuide');
-                completeTraceGuide.textContent = currentHanzi;
-                clearCompleteCanvas();
+        // 初始化动画Writer
+        function initAnimationWriter() {
+            // 直接创建新实例，不需要destroy
+            if (typeof HanziWriter !== 'undefined' && currentHanzi) {
+                try {
+                    // 先清空容器
+                    const animationContainer = document.getElementById('animationCanvas');
+                    if (animationContainer) {
+                        animationContainer.innerHTML = '';
+                    }
+
+                    animationWriter = HanziWriter.create('animationCanvas', currentHanzi, {
+                        width: 200,
+                        height: 200,
+                        padding: 20,
+                        strokeAnimationSpeed: 1,
+                        radicalColor: '#4a6fa5',
+                        strokeColor: '#4a6fa5',
+                        strokeWidth: 8,
+                        delayBetweenStrokes: 500,
+                        showOutline: true,
+                        outlineColor: 'rgba(74, 111, 165, 0.2)'
+                    });
+
+                    // 自动播放动画
+                    animationWriter.animateCharacter();
+                } catch (error) {
+                    console.error('Error initializing animation writer:', error);
+                }
+            }
+        }
+
+        // 初始化描红Canvas
+        function initTracingWriter() {
+            if (currentHanzi) {
+                try {
+                    // 获取Canvas元素
+                    const canvas = document.getElementById('tracingCanvas');
+                    const ctx = canvas.getContext('2d');
+                    const guide = document.getElementById('tracingGuide');
+
+                    // 清空Canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // 设置描红指南
+                    guide.textContent = currentHanzi;
+
+                    // 初始化Canvas事件
+                    let isDrawing = false;
+                    let lastX = 0;
+                    let lastY = 0;
+
+                    canvas.addEventListener('mousedown', (e) => {
+                        isDrawing = true;
+                        const rect = canvas.getBoundingClientRect();
+                        lastX = e.clientX - rect.left;
+                        lastY = e.clientY - rect.top;
+                    });
+
+                    canvas.addEventListener('mousemove', (e) => {
+                        if (!isDrawing) return;
+                        const rect = canvas.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+
+                        // 绘制线条
+                        ctx.beginPath();
+                        ctx.moveTo(lastX, lastY);
+                        ctx.lineTo(x, y);
+                        ctx.strokeStyle = '#4a6fa5';
+                        ctx.lineWidth = 8;
+                        ctx.lineCap = 'round';
+                        ctx.stroke();
+
+                        lastX = x;
+                        lastY = y;
+                    });
+
+                    canvas.addEventListener('mouseup', () => {
+                        isDrawing = false;
+                    });
+
+                    canvas.addEventListener('mouseout', () => {
+                        isDrawing = false;
+                    });
+
+                    // 触摸事件支持
+                    canvas.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        isDrawing = true;
+                        const rect = canvas.getBoundingClientRect();
+                        lastX = e.touches[0].clientX - rect.left;
+                        lastY = e.touches[0].clientY - rect.top;
+                    });
+
+                    canvas.addEventListener('touchmove', (e) => {
+                        e.preventDefault();
+                        if (!isDrawing) return;
+                        const rect = canvas.getBoundingClientRect();
+                        const x = e.touches[0].clientX - rect.left;
+                        const y = e.touches[0].clientY - rect.top;
+
+                        // 绘制线条
+                        ctx.beginPath();
+                        ctx.moveTo(lastX, lastY);
+                        ctx.lineTo(x, y);
+                        ctx.strokeStyle = '#4a6fa5';
+                        ctx.lineWidth = 8;
+                        ctx.lineCap = 'round';
+                        ctx.stroke();
+
+                        lastX = x;
+                        lastY = y;
+                    });
+
+                    canvas.addEventListener('touchend', () => {
+                        isDrawing = false;
+                    });
+                } catch (error) {
+                    console.error('Error initializing tracing canvas:', error);
+                }
+            }
+        }
+
+        // 初始化测验Writer
+        function initQuizWriter() {
+            // 直接创建新实例，不需要destroy
+            if (typeof HanziWriter !== 'undefined' && currentHanzi) {
+                try {
+                    // 先清空容器
+                    const quizContainer = document.getElementById('quizCanvas');
+                    if (quizContainer) {
+                        quizContainer.innerHTML = '';
+                    }
+
+                    quizWriter = HanziWriter.create('quizCanvas', currentHanzi, {
+                        width: 200,
+                        height: 200,
+                        padding: 20,
+                        strokeColor: '#4a6fa5',
+                        strokeWidth: 8,
+                        showOutline: true,
+                        outlineColor: 'rgba(74, 111, 165, 0.2)'
+                    });
+
+                    // 显示测验提示 - 只显示轮廓
+                    quizWriter.hideCharacter();
+                    quizWriter.showOutline();
+                } catch (error) {
+                    console.error('Error initializing quiz writer:', error);
+                }
+            }
+        }
+
+        // 播放动画
+        function playAnimation() {
+            if (animationWriter) {
+                animationWriter.animateCharacter();
+            }
+        }
+
+        // 重置动画
+        function resetAnimation() {
+            if (animationWriter) {
+                try {
+                    // 重新初始化动画Writer
+                    initAnimationWriter();
+                } catch (error) {
+                    console.error('Error resetting animation:', error);
+                }
+            }
+        }
+
+        // 开始描红
+        function startTracing() {
+            // 播放笔顺动画演示
+            if (hanziWriterInstance) {
+                try {
+                    hanziWriterInstance.animateCharacter({
+                        onComplete: function () {
+                            alert('动画演示完成，请开始描红练习！');
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error starting tracing:', error);
+                    // 出错时显示提示
+                    alert('请开始描红练习！');
+                }
+            }
+        }
+
+        // 重置描红
+        function resetTracing() {
+            if (currentHanzi) {
+                try {
+                    // 获取Canvas元素
+                    const canvas = document.getElementById('tracingCanvas');
+                    const ctx = canvas.getContext('2d');
+
+                    // 清空Canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                } catch (error) {
+                    console.error('Error resetting tracing:', error);
+                }
+            }
+        }
+
+        // 开始测验
+        function startQuiz() {
+            if (quizWriter) {
+                try {
+                    // 先重置测验状态
+                    quizWriter.hideCharacter();
+                    quizWriter.showOutline();
+
+                    // 开始笔顺测验
+                    quizWriter.quiz({
+                        onComplete: function (result) {
+                            if (result.correct) {
+                                alert('恭喜！笔顺正确！');
+                            } else {
+                                alert('笔顺错误，请再试一次！');
+                            }
+                        },
+                        onError: function (strokeIndex, strokeData) {
+                            console.log('错误的笔画:', strokeIndex + 1);
+                        },
+                        onStart: function () {
+                            console.log('测验开始');
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error starting quiz:', error);
+                    // 出错时显示提示
+                    alert('请开始笔顺测验！');
+                }
+            }
+        }
+
+        // 重置测验
+        function resetQuiz() {
+            if (quizWriter) {
+                try {
+                    // 重置测验状态
+                    quizWriter.hideCharacter();
+                    quizWriter.showOutline();
+                } catch (error) {
+                    console.error('Error resetting quiz:', error);
+                    // 出错时重新初始化
+                    initQuizWriter();
+                }
             }
         }
 
@@ -1298,83 +1576,113 @@
         // 点击汉字显示详情
         document.querySelectorAll('.hanzi-item').forEach(item => {
             item.addEventListener('click', function () {
+                console.log('Clicked on:', this.textContent.trim());
+
                 currentHanzi = this.getAttribute('data-hanzi');
                 currentPinyin = this.getAttribute('data-pinyin');
                 currentStrokes = parseInt(this.getAttribute('data-strokes'));
                 const wordsStr = this.getAttribute('data-words');
-                const words = JSON.parse(wordsStr);
 
-                // 更新详情内容
-                document.getElementById('detailHanzi').textContent = currentHanzi;
-                document.getElementById('detailWord').textContent = currentHanzi;
-                document.getElementById('detailPinyin').textContent = currentPinyin;
-                document.getElementById('detailStrokes').textContent = currentStrokes;
+                console.log('Current hanzi:', currentHanzi);
+                console.log('Current pinyin:', currentPinyin);
+                console.log('Current strokes:', currentStrokes);
 
-                // 生成笔顺
-                const strokeOrder = document.getElementById('strokeOrder');
-                let strokeHTML = '';
-                const strokes = hanziStrokeData[currentHanzi] || [];
+                try {
+                    const words = JSON.parse(wordsStr);
+                    console.log('Words:', words);
 
-                for (let i = 1; i <= strokes.length; i++) {
-                    const strokeName = strokes[i - 1];
-                    strokeHTML += `
+                    // 更新详情内容
+                    document.getElementById('detailHanzi').textContent = currentHanzi;
+                    document.getElementById('detailWord').textContent = currentHanzi;
+                    document.getElementById('detailPinyin').textContent = currentPinyin;
+                    document.getElementById('detailStrokes').textContent = currentStrokes;
+
+                    // 生成笔顺
+                    const strokeOrder = document.getElementById('strokeOrder');
+                    let strokeHTML = '';
+                    const strokes = hanziStrokeData[currentHanzi] || [];
+
+                    for (let i = 1; i <= strokes.length; i++) {
+                        const strokeName = strokes[i - 1];
+                        strokeHTML += `
                         <div class="stroke-item" onclick="startStrokeTrace(${i})">
                             <div class="stroke-symbol" id="stroke-${i}" style="width: 50px; height: 50px; margin: 0 auto 5px;"></div>
                             <small>${strokeName}</small>
                             <button class="trace-btn" onclick="event.stopPropagation(); startStrokeTrace(${i})">临摹</button>
                         </div>
                     `;
-                }
-                strokeOrder.innerHTML = strokeHTML;
+                    }
+                    strokeOrder.innerHTML = strokeHTML;
 
-                // 生成词语列表
-                const wordList = document.getElementById('wordList');
-                let wordHTML = '';
-                words.forEach(word => {
-                    wordHTML += `
+                    // 生成词语列表
+                    const wordList = document.getElementById('wordList');
+                    let wordHTML = '';
+                    words.forEach(word => {
+                        wordHTML += `
                         <div class="word-item">
                             <div class="word">${word.word}</div>
                             <div class="pinyin">${word.pinyin}</div>
                             <div class="meaning">${word.meaning}</div>
                         </div>
                     `;
-                });
-                wordList.innerHTML = wordHTML;
+                    });
+                    wordList.innerHTML = wordHTML;
 
-                // 更新临摹提示
-                document.getElementById('strokeTraceGuide').textContent = currentHanzi;
-                document.getElementById('completeTraceGuide').textContent = currentHanzi;
+                    // 更新选中状态
+                    document.querySelectorAll('.hanzi-item').forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
 
-                // 显示详情
-                document.getElementById('hanziDetail').classList.add('active');
+                    // 显示详情
+                    const hanziDetail = document.getElementById('hanziDetail');
+                    console.log('Before showing detail:', hanziDetail.classList);
+                    hanziDetail.classList.add('active');
+                    console.log('After showing detail:', hanziDetail.classList);
 
-                // 滚动到详情部分
-                document.getElementById('hanziDetail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // 强制重排
+                    hanziDetail.offsetHeight;
 
-                // 更新选中状态
-                document.querySelectorAll('.hanzi-item').forEach(i => i.classList.remove('selected'));
-                this.classList.add('selected');
+                    // 滚动到详情部分
+                    hanziDetail.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                // 初始化Hanzi Writer动画
-                setTimeout(() => {
-                    initHanziWriter();
-                    // 确保DOM元素完全加载后再初始化笔画
+                    // 检查容器是否可见
                     setTimeout(() => {
-                        initStrokeSymbols();
-                    }, 200);
-                    initCanvases();
-                    clearStrokeCanvas();
-                    clearCompleteCanvas();
-                }, 100);
+                        const isVisible = hanziDetail.offsetParent !== null;
+                        console.log('Detail container visible:', isVisible);
+                        console.log('Detail container style:', window.getComputedStyle(hanziDetail));
+
+                        if (isVisible) {
+                            console.log('Initializing Hanzi Writer instances for:', currentHanzi);
+
+                            // 检查Hanzi Writer是否加载
+                            console.log('HanziWriter available:', typeof HanziWriter !== 'undefined');
+
+                            initHanziWriter();
+
+                            // 确保DOM元素完全加载后再初始化其他实例
+                            setTimeout(() => {
+                                console.log('Initializing stroke symbols');
+                                initStrokeSymbols();
+
+                                // 初始化所有Hanzi Writer实例
+                                console.log('Initializing animation writer');
+                                initAnimationWriter();
+                                console.log('Initializing tracing writer');
+                                initTracingWriter();
+                                console.log('Initializing quiz writer');
+                                initQuizWriter();
+                            }, 500);
+                        } else {
+                            console.error('Detail container is not visible!');
+                        }
+                    }, 300);
+                } catch (error) {
+                    console.error('Error processing click:', error);
+                }
             });
         });
 
         // 初始化Hanzi Writer
         function initHanziWriter() {
-            if (hanziWriterInstance) {
-                hanziWriterInstance.destroy();
-            }
-
             // 检查Hanzi Writer是否可用
             if (typeof HanziWriter === 'undefined') {
                 console.error('Hanzi Writer library is not loaded');
@@ -1382,6 +1690,12 @@
             }
 
             try {
+                // 先清空容器
+                const animationContainer = document.getElementById('hanziAnimation');
+                if (animationContainer) {
+                    animationContainer.innerHTML = '';
+                }
+
                 hanziWriterInstance = HanziWriter.create('hanziAnimation', currentHanzi, {
                     width: 200,
                     height: 200,
@@ -1420,6 +1734,9 @@
 
                 if (strokeElement && typeof HanziWriter !== 'undefined') {
                     try {
+                        // 先清空容器
+                        strokeElement.innerHTML = '';
+
                         // 为每个笔画创建一个小型的Hanzi Writer实例
                         const strokeWriter = HanziWriter.create(`stroke-${i}`, currentHanzi, {
                             width: 60,
@@ -1435,28 +1752,17 @@
 
                         // 尝试不同的方法来实现累积显示
                         try {
-                            // 先清除画布
-                            strokeWriter.clear();
-
-                            // 绘制从第一笔到当前笔的所有笔画
-                            for (let j = 0; j < i; j++) {
-                                strokeWriter.drawStroke(j);
-                            }
-
-                            console.log(`Drew strokes 1 to ${i}`);
-                        } catch (drawError) {
-                            console.error(`Error drawing strokes:`, drawError);
-                            // 尝试另一种方法
+                            // 直接显示从第一笔到当前笔的所有笔画
                             strokeWriter.animateCharacter({
-                                strokeAnimationSpeed: 0.5, // 慢速动画
+                                strokeAnimationSpeed: 0, // 立即显示
                                 onComplete: function () {
-                                    // 动画完成后，隐藏后续笔画
-                                    for (let j = i; j < strokes.length; j++) {
-                                        strokeWriter.hideStroke(j);
-                                    }
-                                    console.log(`Hid strokes ${i + 1} to ${strokes.length}`);
+                                    console.log(`Animation completed for strokes 1 to ${i}`);
                                 }
                             });
+                        } catch (drawError) {
+                            console.error(`Error drawing strokes:`, drawError);
+                            // 出错时显示笔画名称作为后备
+                            strokeElement.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 1.5rem; color: #4a6fa5;">${strokes[i - 1]}</div>`;
                         }
                     } catch (error) {
                         console.error(`Error initializing stroke ${i}:`, error);
