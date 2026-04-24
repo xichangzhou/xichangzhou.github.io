@@ -915,9 +915,6 @@
                             <div id="animationCanvas" style="width: 200px; height: 200px; margin: 0 auto;"></div>
                         </div>
                         <div class="tracing-controls">
-                            <button class="tracing-btn" onclick="playAnimation()">
-                                <i class="fas fa-play"></i> 播放动画
-                            </button>
                             <button class="tracing-btn" onclick="resetAnimation()">
                                 <i class="fas fa-redo"></i> 重置
                             </button>
@@ -934,9 +931,6 @@
                             </div>
                         </div>
                         <div class="tracing-controls">
-                            <button class="tracing-btn" onclick="startTracing()">
-                                <i class="fas fa-pencil-alt"></i> 开始描红
-                            </button>
                             <button class="tracing-btn" onclick="resetTracing()">
                                 <i class="fas fa-redo"></i> 重置
                             </button>
@@ -950,9 +944,6 @@
                             <div id="quizCanvas" style="width: 200px; height: 200px; margin: 0 auto;"></div>
                         </div>
                         <div class="tracing-controls">
-                            <button class="tracing-btn" onclick="startQuiz()">
-                                <i class="fas fa-question-circle"></i> 开始测验
-                            </button>
                             <button class="tracing-btn" onclick="resetQuiz()">
                                 <i class="fas fa-redo"></i> 重置
                             </button>
@@ -1107,6 +1098,7 @@
         let animationWriter = null;
         let tracingWriter = null;
         let quizWriter = null;
+        let quizInstance = null;
 
         // 切换练习标签
         function switchTracingTab(tab) {
@@ -1114,6 +1106,14 @@
             const animationContainer = document.getElementById('animationContainer');
             const tracingContainer = document.getElementById('tracingContainer');
             const quizContainer = document.getElementById('quizContainer');
+
+            // 取消当前的quiz
+            if (quizInstance) {
+                try {
+                    quizInstance.cancel();
+                } catch (e) { }
+                quizInstance = null;
+            }
 
             // 隐藏所有容器
             animationContainer.classList.remove('active');
@@ -1136,6 +1136,7 @@
                 tabs[2].classList.add('active');
                 quizContainer.classList.add('active');
                 initQuizWriter();
+                startQuiz();
             }
         }
 
@@ -1355,7 +1356,7 @@
                     quizWriter.showOutline();
 
                     // 开始笔顺测验
-                    quizWriter.quiz({
+                    quizInstance = quizWriter.quiz({
                         onComplete: function (result) {
                             if (result.correct) {
                                 alert('恭喜！笔顺正确！');
@@ -1380,17 +1381,23 @@
 
         // 重置测验
         function resetQuiz() {
-            if (quizWriter) {
+            if (quizInstance) {
                 try {
-                    // 重置测验状态
-                    quizWriter.hideCharacter();
-                    quizWriter.showOutline();
-                } catch (error) {
-                    console.error('Error resetting quiz:', error);
-                    // 出错时重新初始化
-                    initQuizWriter();
-                }
+                    quizInstance.cancel();
+                } catch (e) { }
             }
+            quizInstance = null;
+            quizWriter = null;
+
+            const quizCanvas = document.getElementById('quizCanvas');
+            if (quizCanvas) {
+                quizCanvas.innerHTML = '';
+            }
+
+            setTimeout(function () {
+                initQuizWriter();
+                startQuiz();
+            }, 100);
         }
 
         // 画布绘制函数 - 笔画
