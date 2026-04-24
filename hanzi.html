@@ -1732,45 +1732,22 @@
                 const strokeElement = document.getElementById(`stroke-${i}`);
                 console.log(`Checking stroke-${i}:`, strokeElement);
 
-                if (strokeElement && typeof HanziWriter !== 'undefined') {
+                if (strokeElement) {
                     try {
                         // 先清空容器
                         strokeElement.innerHTML = '';
 
-                        // 为每个笔画创建一个小型的Hanzi Writer实例
-                        const strokeWriter = HanziWriter.create(`stroke-${i}`, currentHanzi, {
-                            width: 60,
-                            height: 60,
-                            padding: 10,
-                            strokeColor: '#4a6fa5',
-                            strokeWidth: 4,
-                            showOutline: false,
-                            showCharacter: false
-                        });
-
-                        console.log(`Created stroke writer for stroke ${i}`);
-
-                        // 尝试不同的方法来实现累积显示
-                        try {
-                            // 直接显示从第一笔到当前笔的所有笔画
-                            strokeWriter.animateCharacter({
-                                strokeAnimationSpeed: 0, // 立即显示
-                                onComplete: function () {
-                                    console.log(`Animation completed for strokes 1 to ${i}`);
-                                }
-                            });
-                        } catch (drawError) {
-                            console.error(`Error drawing strokes:`, drawError);
-                            // 出错时显示笔画名称作为后备
-                            strokeElement.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 1.5rem; color: #4a6fa5;">${strokes[i - 1]}</div>`;
-                        }
+                        // 使用简单的方法：直接显示笔画符号
+                        const strokeSymbol = strokeSymbols[strokes[i - 1]] || strokes[i - 1];
+                        strokeElement.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 1.5rem; color: #4a6fa5;">${strokeSymbol}</div>`;
+                        console.log(`Displayed stroke symbol for stroke ${i}:`, strokeSymbol);
                     } catch (error) {
                         console.error(`Error initializing stroke ${i}:`, error);
                         // 出错时显示笔画名称作为后备
                         strokeElement.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 1.5rem; color: #4a6fa5;">${strokes[i - 1]}</div>`;
                     }
                 } else {
-                    console.error(`Stroke element ${i} not found or HanziWriter not loaded`);
+                    console.error(`Stroke element ${i} not found`);
                 }
             }
         }
