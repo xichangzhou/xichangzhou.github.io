@@ -401,8 +401,8 @@
 
         .tracing-canvas-container {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 400px;
+            height: 400px;
             margin: 0 auto;
             border: 3px solid #4a6fa5;
             border-radius: 10px;
@@ -947,10 +947,8 @@
                     <div class="tracing-container" id="tracingContainer">
                         <p style="margin-bottom: 15px; color: #666;">交互式描红练习</p>
                         <div class="tracing-canvas-container">
-                            <canvas id="tracingCanvas" width="200" height="200"></canvas>
-                            <div id="tracingGuide"
-                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 100px; font-weight: normal; color: rgba(74, 111, 165, 0.3); pointer-events: none; line-height: 1; padding: 10px;">
-                            </div>
+                            <iframe src="https://writeright.pipecraft.net/zh-CN/"
+                                style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
                         </div>
                         <div class="tracing-controls">
                             <button class="tracing-btn" onclick="resetTracing()">
@@ -1201,94 +1199,8 @@
 
         // 初始化描红Canvas
         function initTracingWriter() {
-            if (currentHanzi) {
-                try {
-                    // 获取Canvas元素
-                    const canvas = document.getElementById('tracingCanvas');
-                    const ctx = canvas.getContext('2d');
-                    const guide = document.getElementById('tracingGuide');
-
-                    // 清空Canvas
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    // 设置描红指南
-                    guide.textContent = currentHanzi;
-
-                    // 初始化Canvas事件
-                    let isDrawing = false;
-                    let lastX = 0;
-                    let lastY = 0;
-
-                    canvas.addEventListener('mousedown', (e) => {
-                        isDrawing = true;
-                        const rect = canvas.getBoundingClientRect();
-                        lastX = e.clientX - rect.left;
-                        lastY = e.clientY - rect.top;
-                    });
-
-                    canvas.addEventListener('mousemove', (e) => {
-                        if (!isDrawing) return;
-                        const rect = canvas.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-
-                        // 绘制线条
-                        ctx.beginPath();
-                        ctx.moveTo(lastX, lastY);
-                        ctx.lineTo(x, y);
-                        ctx.strokeStyle = '#4a6fa5';
-                        ctx.lineWidth = 8;
-                        ctx.lineCap = 'round';
-                        ctx.stroke();
-
-                        lastX = x;
-                        lastY = y;
-                    });
-
-                    canvas.addEventListener('mouseup', () => {
-                        isDrawing = false;
-                    });
-
-                    canvas.addEventListener('mouseout', () => {
-                        isDrawing = false;
-                    });
-
-                    // 触摸事件支持
-                    canvas.addEventListener('touchstart', (e) => {
-                        e.preventDefault();
-                        isDrawing = true;
-                        const rect = canvas.getBoundingClientRect();
-                        lastX = e.touches[0].clientX - rect.left;
-                        lastY = e.touches[0].clientY - rect.top;
-                    });
-
-                    canvas.addEventListener('touchmove', (e) => {
-                        e.preventDefault();
-                        if (!isDrawing) return;
-                        const rect = canvas.getBoundingClientRect();
-                        const x = e.touches[0].clientX - rect.left;
-                        const y = e.touches[0].clientY - rect.top;
-
-                        // 绘制线条
-                        ctx.beginPath();
-                        ctx.moveTo(lastX, lastY);
-                        ctx.lineTo(x, y);
-                        ctx.strokeStyle = '#4a6fa5';
-                        ctx.lineWidth = 8;
-                        ctx.lineCap = 'round';
-                        ctx.stroke();
-
-                        lastX = x;
-                        lastY = y;
-                    });
-
-                    canvas.addEventListener('touchend', () => {
-                        isDrawing = false;
-                    });
-                } catch (error) {
-                    console.error('Error initializing tracing canvas:', error);
-                }
-            }
+            // 由于描红区域现在使用iframe嵌入外部网站，不需要初始化Canvas
+            console.log('Tracing area now uses external website, skipping canvas initialization');
         }
 
         // 初始化测验Writer
