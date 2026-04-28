@@ -381,13 +381,33 @@
             document.querySelector('.nav-links').classList.toggle('active');
         });
 
-        // 文章列表
-        const articlesListData = [
-            'welcome.md'
-        ];
+        // 文章列表（从JSON文件加载）
+        let articlesListData = ['welcome.md', 'welcome1.md'];
 
         // 加载文章列表
         function loadArticlesList() {
+            // 尝试从JSON文件加载文章列表
+            fetch('assets/md/articles.json')
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Failed to load articles.json');
+                })
+                .then(data => {
+                    if (data.articles && Array.isArray(data.articles)) {
+                        articlesListData = data.articles;
+                    }
+                    renderArticlesList();
+                })
+                .catch(() => {
+                    // 如果加载失败，使用默认列表
+                    renderArticlesList();
+                });
+        }
+
+        // 渲染文章列表
+        function renderArticlesList() {
             const list = document.getElementById('articlesList');
             list.innerHTML = '';
 
