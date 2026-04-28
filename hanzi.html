@@ -401,8 +401,8 @@
 
         .tracing-canvas-container {
             position: relative;
-            width: 400px;
-            height: 400px;
+            width: 600px;
+            height: 600px;
             margin: 0 auto;
             border: 3px solid #4a6fa5;
             border-radius: 10px;
@@ -681,12 +681,23 @@
 
             /* 临摹练习区域响应式 */
             .tracing-canvas-container {
-                width: 180px;
-                height: 180px;
+                width: 95vw;
+                height: 95vw;
+                max-width: 600px;
+                max-height: 600px;
                 margin: 0 auto 20px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+            }
+
+            /* 移动端iframe优化 */
+            .tracing-canvas-container iframe {
+                width: 100% !important;
+                height: 100% !important;
+                border: none;
+                transform: scale(0.9);
+                transform-origin: center;
             }
 
             .tracing-canvas-container>div {

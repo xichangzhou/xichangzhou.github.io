@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章 | jsonxcz 一家</title>
+    <meta name="description" content="文章页面，展示markdown文件内容">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 导航栏 */
+        header {
+            background-color: rgba(74, 111, 165, 0.95);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            padding: 0 0 0 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            padding: 0 20px 0 0;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ffd700;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ffd700;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* 菜单按钮 */
+        .menu-toggle {
+            display: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* 内容区域 */
+        .articles-section {
+            padding: 120px 0 40px;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #4a6fa5;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #ffd700;
+            margin: 20px auto;
+        }
+
+        .articles-container {
+            display: flex;
+            gap: 30px;
+        }
+
+        /* 文章列表 */
+        .articles-list {
+            flex: 1;
+            max-width: 300px;
+            background-color: #f5f5f5;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .articles-list h3 {
+            font-size: 1.2rem;
+            color: #4a6fa5;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a6fa5;
+        }
+
+        .articles-list ul {
+            list-style: none;
+        }
+
+        .articles-list li {
+            margin-bottom: 15px;
+        }
+
+        .articles-list a {
+            display: block;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 8px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .articles-list a:hover {
+            background-color: #4a6fa5;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .articles-list a.active {
+            background-color: #4a6fa5;
+            color: white;
+        }
+
+        /* 文章内容 */
+        .article-content {
+            flex: 2;
+            background-color: #f5f5f5;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+        }
+
+        .article-content h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a6fa5;
+        }
+
+        .article-content h2 {
+            font-size: 1.5rem;
+            color: #4a6fa5;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .article-content h3 {
+            font-size: 1.3rem;
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .article-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .article-content li {
+            margin-bottom: 8px;
+        }
+
+        .article-content code {
+            background-color: #e8f4fd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+        }
+
+        .article-content pre {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 15px;
+        }
+
+        .article-content pre code {
+            background-color: transparent;
+            color: #fff;
+            padding: 0;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid #4a6fa5;
+            padding-left: 20px;
+            margin-left: 0;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: rgba(74, 111, 165, 0.98);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                z-index: 999;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                cursor: pointer;
+                font-size: 28px;
+                padding: 10px 20px;
+                background: none;
+                border: none;
+                color: white;
+                z-index: 1001;
+            }
+
+            .articles-container {
+                flex-direction: column;
+            }
+
+            .articles-list {
+                max-width: 100%;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">jsonxcz 一家</a>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">首页</a></li>
+                    <li><a href="index.html#about">关于我们</a></li>
+                    <li><a href="index.html#family">家庭成员</a></li>
+                    <li><a href="index.html#life">生活点滴</a></li>
+                    <li><a href="index.html#memories">美好回忆</a></li>
+                    <li><a href="index.html#pdf">PDF文件</a></li>
+                    <li><a href="articles.html" class="active">文章</a></li>
+                    <li><a href="developer.html">程序员</a></li>
+                    <li><a href="xiaozhengqi.html">小正启</a></li>
+                    <li><a href="index.html#contact">联系我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="articles-section">
+        <div class="container">
+            <h2 class="section-title">文章</h2>
+
+            <div class="articles-container">
+                <!-- 文章列表 -->
+                <div class="articles-list">
+                    <h3><i class="fas fa-file-alt"></i> 文章列表</h3>
+                    <ul id="articlesList">
+                        <li><a href="#" onclick="loadArticle('welcome.md')" class="active">欢迎.md</a></li>
+                    </ul>
+                </div>
+
+                <!-- 文章内容 -->
+                <div class="article-content" id="articleContent">
+                    <div id="loading">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: #4a6fa5;"></i>
+                        <p style="text-align: center; margin-top: 20px;">加载中...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 jsonxcz 一家 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 菜单切换
+        document.querySelector('.menu-toggle').addEventListener('click', function () {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // 文章列表
+        const articlesListData = [
+            'welcome.md'
+        ];
+
+        // 加载文章列表
+        function loadArticlesList() {
+            const list = document.getElementById('articlesList');
+            list.innerHTML = '';
+
+            articlesListData.forEach(article => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = article;
+                a.onclick = function () {
+                    loadArticle(article);
+                    return false;
+                };
+                li.appendChild(a);
+                list.appendChild(li);
+            });
+        }
+
+        // 加载文章内容
+        function loadArticle(filename) {
+            // 更新导航状态
+            document.querySelectorAll('.articles-list a').forEach(a => {
+                a.classList.remove('active');
+                if (a.textContent === filename) {
+                    a.classList.add('active');
+                }
+            });
+
+            const content = document.getElementById('articleContent');
+            content.innerHTML = '<div id="loading"><i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: #4a6fa5;"></i><p style="text-align: center; margin-top: 20px;">加载中...</p></div>';
+
+            fetch(`assets/md/${filename}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('文章不存在');
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    const html = marked.parse(text);
+                    content.innerHTML = html;
+                })
+                .catch(error => {
+                    content.innerHTML = `<p style="text-align: center; color: #e74c3c;">${error.message}</p>`;
+                });
+        }
+
+        // 页面加载时显示欢迎文章
+        document.addEventListener('DOMContentLoaded', function () {
+            loadArticlesList();
+            loadArticle('welcome.md');
+        });
+    </script>
+</body>
+
+</html>
