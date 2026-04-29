@@ -438,7 +438,7 @@
             const content = document.getElementById('articleContent');
             content.innerHTML = '<div id="loading"><i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: #4a6fa5;"></i><p style="text-align: center; margin-top: 20px;">加载中...</p></div>';
 
-            fetch(`assets/md/${filename}`)
+            fetch(`assets/md/${filename}.md`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('文章不存在');

@@ -10,7 +10,9 @@ def generate_articles_list():
     # 遍历目录，找到所有 .md 文件
     for filename in os.listdir(md_dir):
         if filename.endswith('.md') and filename != 'index.md':
-            articles.append(filename)
+            # 去掉 .md 后缀，只保留文件名
+            article_name = os.path.splitext(filename)[0]
+            articles.append(article_name)
     
     # 按文件名排序
     articles.sort()
